@@ -1,0 +1,38 @@
+div {
+  font-family: 'Roboto', sans-serif;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center {
+  text-align: center;
+  margin: auto;
+  width: 90%;
+}
+
+.login .print {
+  font-size: 25px;
+}
+
+.competition {
+  font-size: 12px;
+}
+
+button {
+  background-color: #4ddbff;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:disabled {
+  background-color: #767d87;
+}
