@@ -41,21 +41,13 @@ export class PrintService {
 
   constructor() {}
   
-  private getNewCertificate(wcif: any, eventId: string, place: number): Certificate {
-    let event: Event = wcif.events.filter(e => e.id === eventId)[0];
-    let results: Result[] = event.rounds[event.rounds.length - 1].results;
-    let result: Result = results.filter(r => r.ranking === place)[0];
-    if (result === null || result === undefined) {
-      console.error('No result available for ' + eventId + ' at place ' + place + '!');
-      return new Certificate();
-    }
-    
+  private getNewCertificate(wcif: any, eventId: string, result: Result): Certificate {
     let certificate: Certificate = new Certificate();
     certificate.delegate = this.getPersonsWithRole(wcif, "delegate");
     certificate.organizers = this.getPersonsWithRole(wcif, "organizer");
     certificate.competitionName = wcif.name;
     certificate.name = wcif.persons.filter(p => p.registrantId === result.personId)[0].name;
-    certificate.place = this.getPlace(place);
+    certificate.place = this.getPlace(result.ranking);
     certificate.event = this.getEvent(eventId).label;
     certificate.result = this.formatResultForEvent(result, eventId);
     certificate.locationAndDate = ''; // todo
@@ -140,9 +132,13 @@ export class PrintService {
     };
     
     for (let i = 0; i < events.length; i++) {
-      document.content.push(this.getOneCertificateContent(this.getNewCertificate(wcif, events[i], 1)));
-      document.content.push(this.getOneCertificateContent(this.getNewCertificate(wcif, events[i], 2)));
-      document.content.push(this.getOneCertificateContent(this.getNewCertificate(wcif, events[i], 3)));
+      let event: Event = wcif.events.filter(e => e.id === events[i])[0];
+      let results: Result[] = event.rounds[event.rounds.length - 1].results;
+      let podiumPlaces = results.filter(r => r.ranking !== null && r.ranking <= 3);
+      
+      for(let p = 0; p < podiumPlaces.length; p++) {
+        document.content.push(this.getOneCertificateContent(this.getNewCertificate(wcif, events[i], podiumPlaces[p])));
+      }
     }
     document.content[document.content.length - 1].pageBreak = '';
 
