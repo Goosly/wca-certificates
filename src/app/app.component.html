@@ -20,17 +20,18 @@
   <!-- INFORMATION ABOUT COMP -->
     <div *ngIf="competitionId && wcif">
       <p> Selected competition: {{ competitionId }}<br>
-      {{ events?.length }} events found!</p>
+      {{ events?.length }} events found:</p>
       
       <table>
-      <!-- todo use checkboxes -->
       <tr *ngFor="let event of wcif.events">
         <td><input type="checkbox" [(ngModel)]="event.printCertificate"></td>
         <td>{{ printService.getEvent(event.id)?.label }}</td>
+        <td>{{ getWarningIfAny(event.id) }}</td>
       </tr>
-      </table>
+      </table><br>
       <button class="print" (click)="printCertificates()"
-        [disabled]="buttonDisabled()">Download pdf</button>
+        [disabled]="buttonDisabled()">Download pdf</button><br><br>
+      <a href='https://drive.google.com/open?id=1wGd7Ijc3cU8xbO4s39jy5qQU8hylMRda' target="_blank">Background</a>
     </div>
     
   </div>

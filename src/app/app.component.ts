@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ApiService } from '../common/api';
 import { PrintService } from '../common/print';
 import { Event } from '@wca/helpers/lib/models/event';
+import { Result } from '@wca/helpers/lib/models/result';
+import { environment } from '../environments/environment';
 declare var $ :any;
 
 @Component({
@@ -44,7 +46,7 @@ export class AppComponent  {
       try {
         this.events = this.wcif["events"];
         this.events.forEach(function(e) {
-          if (e.id === '666') // todo remove
+          if (environment.testMode && e.id === '666')
             e["printCertificate"] = true;
         });
       } catch (error) {
@@ -58,6 +60,25 @@ export class AppComponent  {
   printCertificates() {
     this.printService.printCertificates(this.wcif,
       Array.from(this.events.filter(e => e["printCertificate"]).map(e => e.id)));
+  }
+  
+  getWarningIfAny(eventId: string): string {
+    let event: Event = this.wcif.events.filter(e => e.id === eventId)[0];
+    let results: Result[] = event.rounds[event.rounds.length - 1].results;
+    let podiumPlaces = results.filter(r => r.ranking !== null && r.ranking <= 3).length;
+    
+    switch(podiumPlaces) {
+      case 0:
+        return 'Not available yet';
+      case 1:
+        return 'Only 1 person on the podium!';
+      case 2:
+        return 'Only 2 persons on the podium!';
+      case 3:
+        return ''; // No warning
+      default:
+        return 'More than 3 persons on the podium!';
+    }
   }
   
   buttonDisabled(): boolean {
