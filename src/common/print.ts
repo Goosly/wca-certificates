@@ -4,6 +4,7 @@ import { Certificate } from './Certificate';
 import { Event } from '@wca/helpers/lib/models/event';
 import { Result } from '@wca/helpers/lib/models/result';
 import { formatCentiseconds } from '@wca/helpers/lib/helpers/time';
+import { decodeMultiResult, formatMultiResult } from '@wca/helpers/lib/helpers/result';
 declare var pdfMake: any;
 
 @Injectable({
@@ -43,7 +44,7 @@ export class PrintService {
   private getNewCertificate(wcif: any, eventId: string, place: number): Certificate {
     let event: Event = wcif.events.filter(e => e.id === eventId)[0];
     let results: Result[] = event.rounds[event.rounds.length - 1].results;
-    let result: Result = results.filter(r => r.ranking = place)[0];
+    let result: Result = results.filter(r => r.ranking === place)[0];
     if (result === null || result === undefined) {
       console.error('No result available for ' + eventId + ' at place ' + place + '!');
       return new Certificate();
@@ -53,14 +54,28 @@ export class PrintService {
     certificate.delegate = this.getPersonsWithRole(wcif, "delegate");
     certificate.organizers = this.getPersonsWithRole(wcif, "organizer");
     certificate.competitionName = wcif.name;
-    certificate.name = wcif.persons[result.personId - 1].name;
+    certificate.name = wcif.persons.filter(p => p.registrantId === result.personId)[0].name;
     certificate.place = this.getPlace(place);
     certificate.event = this.getEvent(eventId).label;
-    certificate.result = ['333fm', '333bf', '444bf', '555bf', '333mbf'].includes(eventId) ?
-      result.best : result.average;
-      // todo format!
+    certificate.result = this.formatResultForEvent(result, eventId);
     certificate.locationAndDate = ''; // todo
     return certificate;
+  }
+  
+  private formatResultForEvent(result: Result, eventId: string): string {
+    switch(eventId) {
+      case '333fm':
+        return result['average'];
+      case '333bf':
+      case '444bf':
+      case '555bf':
+        return formatCentiseconds(result['best']);
+      case '333mbf':
+        let mbldResult = decodeMultiResult(result['best']);
+        return formatMultiResult(mbldResult);
+      default:
+        return formatCentiseconds(result['average']);
+    }
   }
   
   private getPersonsWithRole(wcif: any, role: string): string {
