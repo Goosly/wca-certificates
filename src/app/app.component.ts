@@ -12,6 +12,8 @@ declare var $ :any;
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent  {
+  state: 'PRINT' | 'EDIT' = 'PRINT';
+  
   // Info about competitions managed by user
   competitionsToChooseFrom: Array<String> = null;
   competitionId: string;

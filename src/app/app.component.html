@@ -17,8 +17,8 @@
       <p *ngIf="!!competitionsToChooseFrom && competitionsToChooseFrom.length === 0">You don't have any competition available :-(</p>
     </div>
 
-  <!-- INFORMATION ABOUT COMP -->
-    <div *ngIf="competitionId && wcif">
+  <!-- INFORMATION ABOUT COMP AND PRINTING -->
+    <div *ngIf="competitionId && wcif && state === 'PRINT'">
       <p> Selected competition: {{ competitionId }}<br><br>
       <button (click)="printEmptyCertificate()"
         >Empty certificate for {{ competitionId }}</button><br><br>
@@ -31,9 +31,16 @@
         <td>{{ getWarningIfAny(event.id) }}</td>
       </tr>
       </table><br>
+      <button (click)="state = 'EDIT'">Customize text and styling</button><br><br>
       <button (click)="printCertificates()"
         [disabled]="buttonDisabled()">Download pdf</button><br><br>
       <a href='https://drive.google.com/open?id=1wGd7Ijc3cU8xbO4s39jy5qQU8hylMRda' target="_blank">Example background</a>
+    </div>
+    
+    
+  <!-- CUSTOMIZE TEXT AND STYLING -->
+    <div *ngIf="competitionId && wcif && state === 'EDIT'">
+      <button (click)="state = 'PRINT'">Go back to printing</button>
     </div>
     
   </div>
