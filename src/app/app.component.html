@@ -19,7 +19,9 @@
 
   <!-- INFORMATION ABOUT COMP -->
     <div *ngIf="competitionId && wcif">
-      <p> Selected competition: {{ competitionId }}<br>
+      <p> Selected competition: {{ competitionId }}<br><br>
+      <button (click)="printEmptyCertificate()"
+        >Empty certificate for {{ competitionId }}</button><br><br>
       {{ events?.length }} events found:</p>
       
       <table>
@@ -31,7 +33,7 @@
       </table><br>
       <button (click)="printCertificates()"
         [disabled]="buttonDisabled()">Download pdf</button><br><br>
-      <a href='https://drive.google.com/open?id=1wGd7Ijc3cU8xbO4s39jy5qQU8hylMRda' target="_blank">Background</a>
+      <a href='https://drive.google.com/open?id=1wGd7Ijc3cU8xbO4s39jy5qQU8hylMRda' target="_blank">Example background</a>
     </div>
     
   </div>

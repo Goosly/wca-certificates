@@ -54,6 +54,19 @@ export class PrintService {
     return certificate;
   }
   
+  private getEmptyCertificate(wcif: any, ): Certificate {
+    let certificate: Certificate = new Certificate();
+    certificate.delegate = this.getPersonsWithRole(wcif, "delegate");
+    certificate.organizers = this.getPersonsWithRole(wcif, "organizer");
+    certificate.competitionName = wcif.name;
+    certificate.name = '';
+    certificate.place = '            ';
+    certificate.event = '                        ';
+    certificate.result = '            ';
+    certificate.locationAndDate = ''; // todo
+    return certificate;
+  }
+  
   private formatResultForEvent(result: Result, eventId: string): string {
     switch(eventId) {
       case '333fm':
@@ -72,6 +85,7 @@ export class PrintService {
   
   private getPersonsWithRole(wcif: any, role: string): string {
     let persons = wcif.persons.filter(p => p.roles.includes(role));
+    persons.sort((a, b) => a.name.localeCompare(b.name));
     if (persons.length === 1) {
       return persons[0].name;
     } else {
@@ -104,7 +118,7 @@ export class PrintService {
           {text: certificate.competitionName, bold: true},
           ', certify that',
           '\n\n\n',
-          {text: certificate.name, fontSize: 36, bold: true},
+          {text: certificate.name, fontSize: 32, bold: true},
           '\n\n\n',
           
           'has placed ',
@@ -113,7 +127,7 @@ export class PrintService {
           {text: certificate.event, bold: true},
           ' with a result of ',
           {text: certificate.result, bold: true},
-          '\n\n\n\n\n',
+          '\n\n\n',
           {text: certificate.locationAndDate, fontSize: 17}
       ],
       alignment: 'center',
@@ -122,15 +136,8 @@ export class PrintService {
   }
 
   public printCertificates(wcif: any, events: string[]) {
-    var document = {
-      pageOrientation: 'landscape',
-      content: [],
-      pageMargins: [ 100, 60, 100, 60 ],
-      defaultStyle: {
-        fontSize: 22
-      }
-    };
-    
+    let document = this.getDocument();
+    let atLeastOneCertificate = false;
     for (let i = 0; i < events.length; i++) {
       let event: Event = wcif.events.filter(e => e.id === events[i])[0];
       let results: Result[] = event.rounds[event.rounds.length - 1].results;
@@ -138,12 +145,37 @@ export class PrintService {
       
       for(let p = 0; p < podiumPlaces.length; p++) {
         document.content.push(this.getOneCertificateContent(this.getNewCertificate(wcif, events[i], podiumPlaces[p])));
+        atLeastOneCertificate = true;
       }
     }
+    if (! atLeastOneCertificate) {
+      alert('No results available. Please select at least one event that already has results in the final.');
+    }
+    
+    this.removeLastPageBreak(document);
+    pdfMake.createPdf(document).download('Certificates ' + wcif.name + '.pdf');
+  }
+  
+  public printEmptyCertificate(wcif: any) {
+    let document = this.getDocument();
+    document.content.push(this.getOneCertificateContent(this.getEmptyCertificate(wcif)));
+    this.removeLastPageBreak(document);
+    pdfMake.createPdf(document).download('Empty certificate - ' + wcif.name + '.pdf');
+  }
+  
+  private removeLastPageBreak(document: any): void {
     document.content[document.content.length - 1].pageBreak = '';
-
-    let filename = 'certificates.pdf';
-    pdfMake.createPdf(document).download(filename);
+  }
+  
+  private getDocument(): any {
+    return {
+      pageOrientation: 'landscape',
+      content: [],
+      pageMargins: [ 100, 60, 100, 60 ],
+      defaultStyle: {
+        fontSize: 22
+      }
+    };
   }
 
   private downloadFile(data: string, filename: string){

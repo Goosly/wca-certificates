@@ -62,6 +62,10 @@ export class AppComponent  {
       Array.from(this.events.filter(e => e["printCertificate"]).map(e => e.id)));
   }
   
+  printEmptyCertificate() {
+    this.printService.printEmptyCertificate(this.wcif);
+  }
+  
   getWarningIfAny(eventId: string): string {
     let event: Event = this.wcif.events.filter(e => e.id === eventId)[0];
     let results: Result[] = event.rounds[event.rounds.length - 1].results;
