@@ -37,9 +37,9 @@
       <a href='https://drive.google.com/open?id=1wGd7Ijc3cU8xbO4s39jy5qQU8hylMRda' target="_blank">Example background</a>
     </div>
     
-    
   <!-- CUSTOMIZE TEXT AND STYLING -->
     <div *ngIf="competitionId && wcif && state === 'EDIT'">
+      <textarea [(ngModel)]="printService.templateJson"></textarea><br>
       <button (click)="state = 'PRINT'">Go back to printing</button>
     </div>
     

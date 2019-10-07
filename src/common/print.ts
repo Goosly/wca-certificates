@@ -11,6 +11,27 @@ declare var pdfMake: any;
   providedIn: 'root'
 })
 export class PrintService {
+  
+  public templateJson = '[' + '\n' +
+          '"\\n\\n\\n",' + '\n' +
+          '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+          '", on behalf of the ",' + '\n' +
+          '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+          '", and ",' + '\n' +
+          '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+          '", on behalf of the organisation team of ",' + '\n' +
+          '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+          '", certify that",' + '\n' +
+          '"\\n\\n\\n",' + '\n' +
+          '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+          '"\\n\\n\\n",' + '\n' +
+          '"has placed ",' + '\n' +
+          '{"text": "certificate.place", "bold": "true"},' + '\n' +
+          '" at ",' + '\n' +
+          '{"text": "certificate.event", "bold": "true"},' + '\n' +
+          '" with a result of ",' + '\n' +
+          '{"text": "certificate.result", "bold": "true"}' + '\n' +
+      ']';
 
   public eventNames = [
     {id: '222', label: '2x2x2 Cube'},
@@ -106,33 +127,25 @@ export class PrintService {
   }
   
   getOneCertificateContent(certificate: Certificate) {
+    let jsonWithReplacedStrings = this.replaceStringsIn(this.templateJson, certificate);
+    let textObject = JSON.parse(jsonWithReplacedStrings);
     return {
-      text: [
-          '\n\n\n',
-          {text: certificate.delegate, bold: true},
-          ', on behalf of the ',
-          {text: 'World Cube Association', bold: true},
-          ', and ',
-          {text: certificate.organizers, bold: true},
-          ', on behalf of the organisation team of ',
-          {text: certificate.competitionName, bold: true},
-          ', certify that',
-          '\n\n\n',
-          {text: certificate.name, fontSize: 32, bold: true},
-          '\n\n\n',
-          
-          'has placed ',
-          {text: certificate.place, bold: true},
-          ' at ',
-          {text: certificate.event, bold: true},
-          ' with a result of ',
-          {text: certificate.result, bold: true},
-          '\n\n\n',
-          {text: certificate.locationAndDate, fontSize: 17}
-      ],
+      text: textObject,
       alignment: 'center',
       pageBreak: 'after'
     };
+  }
+  
+  private replaceStringsIn(s: string, certificate: Certificate): string {
+    s = s.replace("certificate.delegate", certificate.delegate);
+    s = s.replace("certificate.organizers", certificate.organizers);
+    s = s.replace("certificate.competitionName", certificate.competitionName);
+    s = s.replace("certificate.name", certificate.name);
+    s = s.replace("certificate.place", certificate.place);
+    s = s.replace("certificate.event", certificate.event);
+    s = s.replace("certificate.result", certificate.result);
+    s = s.replace("certificate.locationAndDate", certificate.locationAndDate);
+    return s;
   }
 
   public printCertificates(wcif: any, events: string[]) {

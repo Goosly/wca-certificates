@@ -36,3 +36,8 @@ button {
 button:disabled {
   background-color: #767d87;
 }
+
+textarea {
+  width: 500px;
+  height: 400px;
+}
