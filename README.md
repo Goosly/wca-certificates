@@ -1,4 +1,5 @@
-Print certificates for WCA competitions
+Print certificates for WCA competitions using WCA Live
+
 Hosted at: https://goosly.github.io/wca-certificates/
 
 # Development
