@@ -97,8 +97,8 @@ export class PrintService {
       case '555bf':
         return formatCentiseconds(result['best']);
       case '333mbf':
-        let mbldResult = decodeMultiResult(result['best']);
-        return formatMultiResult(mbldResult);
+        let mbldResult: string = result['best'];
+        return formatMultiResult(decodeMultiResult('0' + mbldResult));
       default:
         return formatCentiseconds(result['average']);
     }
