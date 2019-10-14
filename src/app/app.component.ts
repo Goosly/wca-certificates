@@ -22,7 +22,7 @@ export class AppComponent  {
   
   constructor (
           public apiService: ApiService,
-          public printService: PrintService,) {
+          public printService: PrintService) {
       if (this.apiService.oauthToken) {
         this.handleGetCompetitions();
       }

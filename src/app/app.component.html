@@ -39,7 +39,14 @@
     
   <!-- CUSTOMIZE TEXT AND STYLING -->
     <div *ngIf="competitionId && wcif && state === 'EDIT'">
-      <textarea [(ngModel)]="printService.templateJson"></textarea><br>
+      <select class='form-control' [(ngModel)]='printService.language'>
+        <option value='nl'>Dutch</option>
+        <option value='en'>English (UK)</option>
+        <option value='en-us'>English (US)</option>
+        <option value='fr'>French</option>
+      </select>&nbsp;&nbsp;
+      <button (click)="printService.loadLanguageTemplate()">Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
+      <textarea [(ngModel)]="printService.templateJson"></textarea><br><br>
       <button (click)="state = 'PRINT'">Go back to printing</button>
     </div>
     
