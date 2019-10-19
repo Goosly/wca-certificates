@@ -76,7 +76,7 @@ export class PrintService {
   private formatResultForEvent(result: Result, eventId: string): string {
     switch(eventId) {
       case '333fm':
-        return result['average'];
+        return result['average'] || result['best'];
       case '333bf':
       case '444bf':
       case '555bf':
@@ -85,7 +85,7 @@ export class PrintService {
         let mbldResult: string = result['best'];
         return formatMultiResult(decodeMultiResult('0' + mbldResult));
       default:
-        return formatCentiseconds(result['average']);
+        return formatCentiseconds(result['average'] || result['best']);
     }
   }
   
@@ -205,7 +205,8 @@ export class PrintService {
             '{"text": "certificate.place", "bold": "true"},' + '\n' +
             '" at ",' + '\n' +
             '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '" with a result of ",' + '\n' +
+            '"\\n",' + '\n' +
+            '"with a result of ",' + '\n' +
             '{"text": "certificate.result", "bold": "true"}' + '\n' +
         ']';
       case 'en-us':
@@ -226,7 +227,8 @@ export class PrintService {
             '{"text": "certificate.place", "bold": "true"},' + '\n' +
             '" at ",' + '\n' +
             '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '" with a result of ",' + '\n' +
+            '"\\n",' + '\n' +
+            '"with a result of ",' + '\n' +
             '{"text": "certificate.result", "bold": "true"}' + '\n' +
         ']';
       case 'nl':
@@ -247,7 +249,8 @@ export class PrintService {
             '{"text": "certificate.place", "bold": "true"},' + '\n' +
             '" plaats heeft behaald bij ",' + '\n' +
             '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '" met een resultaat van ",' + '\n' +
+            '"\\n",' + '\n' +
+            '"met een resultaat van ",' + '\n' +
             '{"text": "certificate.result", "bold": "true"}' + '\n' +
         ']';
       case 'fr':
@@ -268,7 +271,30 @@ export class PrintService {
             '{"text": "certificate.place", "bold": "true"},' + '\n' +
             '" place au ",' + '\n' +
             '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '" avec un résultat de ",' + '\n' +
+            '"\\n",' + '\n' +
+            '"avec un résultat de ",' + '\n' +
+            '{"text": "certificate.result", "bold": "true"}' + '\n' +
+        ']';
+      case 'ru':
+        return '[' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+            '", со стороны ",' + '\n' +
+            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+            '", и ",' + '\n' +
+            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+            '", со стороны команды организаторов ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '", подтверждают, что",' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '"занял ",' + '\n' +
+            '{"text": "certificate.place", "bold": "true"},' + '\n' +
+            '" место в дисциплине ",' + '\n' +
+            '{"text": "certificate.event", "bold": "true"},' + '\n' +
+            '"\\n",' + '\n' +
+            '"с результатом ",' + '\n' +
             '{"text": "certificate.result", "bold": "true"}' + '\n' +
         ']';
       default:
@@ -285,6 +311,8 @@ export class PrintService {
         return 'en';
       case 'fr':
         return 'et';
+      case 'ru':
+        return 'и';
       default:
         return '';
      }
@@ -299,6 +327,8 @@ export class PrintService {
         return 'eerste';
       case 'fr':
         return 'première';
+      case 'ru':
+        return 'первый';
       default:
         return this.getFirst('en');
      }
@@ -313,6 +343,8 @@ export class PrintService {
         return 'tweede';
       case 'fr':
         return 'seconde';
+      case 'ru':
+        return 'второй';
       default:
         return this.getSecond('en');
      }
@@ -327,6 +359,8 @@ export class PrintService {
         return 'derde';
       case 'fr':
         return 'troisième';
+      case 'ru':
+        return 'третий';
       default:
         return this.getThird('en');
      }
