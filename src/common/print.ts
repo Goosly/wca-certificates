@@ -328,7 +328,7 @@ export class PrintService {
       case 'fr':
         return 'première';
       case 'ru':
-        return 'первый';
+        return 'первое';
       default:
         return this.getFirst('en');
      }
@@ -344,7 +344,7 @@ export class PrintService {
       case 'fr':
         return 'seconde';
       case 'ru':
-        return 'второй';
+        return 'второе';
       default:
         return this.getSecond('en');
      }
@@ -360,7 +360,7 @@ export class PrintService {
       case 'fr':
         return 'troisième';
       case 'ru':
-        return 'третий';
+        return 'третье';
       default:
         return this.getThird('en');
      }
