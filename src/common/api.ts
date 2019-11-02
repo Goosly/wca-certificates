@@ -28,16 +28,17 @@ export class ApiService {
   }
 
   logIn(): void {
-    window.location.href = `${environment.wcaUrl}/oauth/authorize?client_id=${environment.wcaAppId}&redirect_uri=${environment.appUrl}&response_type=token&scope=manage_competitions`;
+    window.location.href = `${environment.wcaUrl}/oauth/authorize?client_id=${environment.wcaAppId}`
+        + `&redirect_uri=${environment.appUrl}&response_type=token&scope=manage_competitions`;
   }
 
   getCompetitions(): Observable<any> {
-    let url: string = `${environment.wcaUrl}/api/v0/competitions?managed_by_me=true`;
-    //if (! environment.testMode) {
-      let startDate = new Date();
+    let url = `${environment.wcaUrl}/api/v0/competitions?managed_by_me=true`;
+    if (! environment.testMode) {
+      const startDate = new Date();
       startDate.setDate(startDate.getDate() - 7);
       url += `&start=${startDate.toISOString()}`;
-    //}
+    }
     return this.httpClient.get(url, {headers: this.headerParams});
   }
 

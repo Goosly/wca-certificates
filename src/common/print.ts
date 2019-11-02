@@ -5,6 +5,7 @@ import { Event } from '@wca/helpers/lib/models/event';
 import { Result } from '@wca/helpers/lib/models/result';
 import { formatCentiseconds } from '@wca/helpers/lib/helpers/time';
 import { decodeMultiResult, formatMultiResult } from '@wca/helpers/lib/helpers/result';
+import {TranslationHelper} from './translation';
 declare var pdfMake: any;
 
 @Injectable({
@@ -38,7 +39,7 @@ export class PrintService {
   ];
 
   constructor() {
-    this.templateJson = this.getTemplate(this.language);
+    this.templateJson = TranslationHelper.getTemplate(this.language);
   }
   
   public getEvent(eventId: string) {
@@ -96,17 +97,17 @@ export class PrintService {
       return persons[0].name;
     } else {
       let last = persons.pop();
-      return persons.map(p => p.name).join(', ') + ' ' + this.getAnd(this.language) + ' ' + last.name;
+      return persons.map(p => p.name).join(', ') + ' ' + TranslationHelper.getAnd(this.language) + ' ' + last.name;
     }
   }
   
   private getPlace (place: number) {
     if (place === 1)
-      return this.getFirst(this.language);
+      return TranslationHelper.getFirst(this.language);
     if (place === 2)
-      return this.getSecond(this.language);
+      return TranslationHelper.getSecond(this.language);
     if (place === 3)
-      return this.getThird(this.language);
+      return TranslationHelper.getThird(this.language);
     console.warn('Not a podium place');
     return '';
   }
@@ -182,188 +183,7 @@ export class PrintService {
   }
   
   public loadLanguageTemplate() {
-    this.templateJson = this.getTemplate(this.language);
-  }
-  
-  private getTemplate(language: string): string {
-    switch (language) {
-      case 'en':
-        return '[' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
-            '", on behalf of the ",' + '\n' +
-            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
-            '", and ",' + '\n' +
-            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
-            '", on behalf of the organisation team of ",' + '\n' +
-            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-            '", certify that",' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '"has placed ",' + '\n' +
-            '{"text": "certificate.place", "bold": "true"},' + '\n' +
-            '" at ",' + '\n' +
-            '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '"\\n",' + '\n' +
-            '"with a result of ",' + '\n' +
-            '{"text": "certificate.result", "bold": "true"}' + '\n' +
-        ']';
-      case 'en-us':
-        return '[' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
-            '", on behalf of the ",' + '\n' +
-            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
-            '", and ",' + '\n' +
-            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
-            '", on behalf of the organization team of ",' + '\n' +
-            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-            '", certify that",' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '"has placed ",' + '\n' +
-            '{"text": "certificate.place", "bold": "true"},' + '\n' +
-            '" at ",' + '\n' +
-            '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '"\\n",' + '\n' +
-            '"with a result of ",' + '\n' +
-            '{"text": "certificate.result", "bold": "true"}' + '\n' +
-        ']';
-      case 'nl':
-        return '[' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
-            '", namens de ",' + '\n' +
-            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
-            '", en ",' + '\n' +
-            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
-            '", namens het organisatieteam van ",' + '\n' +
-            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-            '", verklaren dat",' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '"de ",' + '\n' +
-            '{"text": "certificate.place", "bold": "true"},' + '\n' +
-            '" plaats heeft behaald bij ",' + '\n' +
-            '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '"\\n",' + '\n' +
-            '"met een resultaat van ",' + '\n' +
-            '{"text": "certificate.result", "bold": "true"}' + '\n' +
-        ']';
-      case 'fr':
-        return '[' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
-            '", au nom de la ",' + '\n' +
-            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
-            '", et ",' + '\n' +
-            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
-            '", au nom de l\'équipe d\'organisation du ",' + '\n' +
-            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-            '", certifient que",' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '"a obtenu la ",' + '\n' +
-            '{"text": "certificate.place", "bold": "true"},' + '\n' +
-            '" place au ",' + '\n' +
-            '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '"\\n",' + '\n' +
-            '"avec un résultat de ",' + '\n' +
-            '{"text": "certificate.result", "bold": "true"}' + '\n' +
-        ']';
-      case 'ru':
-        return '[' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
-            '", со стороны ",' + '\n' +
-            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
-            '", и ",' + '\n' +
-            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
-            '", со стороны команды организаторов ",' + '\n' +
-            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-            '", подтверждают, что",' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
-            '"\\n\\n\\n",' + '\n' +
-            '"занял ",' + '\n' +
-            '{"text": "certificate.place", "bold": "true"},' + '\n' +
-            '" место в дисциплине ",' + '\n' +
-            '{"text": "certificate.event", "bold": "true"},' + '\n' +
-            '"\\n",' + '\n' +
-            '"с результатом ",' + '\n' +
-            '{"text": "certificate.result", "bold": "true"}' + '\n' +
-        ']';
-      default:
-        return this.getTemplate('en');
-    }
-  }
-  
-  private getAnd(language: string): string {
-     switch (language) {
-      case 'en':
-      case 'en-us':
-        return 'and';
-      case 'nl':
-        return 'en';
-      case 'fr':
-        return 'et';
-      case 'ru':
-        return 'и';
-      default:
-        return '';
-     }
-  }
-  
-  private getFirst(language: string): string {
-     switch (language) {
-      case 'en':
-      case 'en-us':
-        return 'first';
-      case 'nl':
-        return 'eerste';
-      case 'fr':
-        return 'première';
-      case 'ru':
-        return 'первое';
-      default:
-        return this.getFirst('en');
-     }
-  }
-  
-  private getSecond(language: string): string {
-     switch (language) {
-      case 'en':
-      case 'en-us':
-        return 'second';
-      case 'nl':
-        return 'tweede';
-      case 'fr':
-        return 'seconde';
-      case 'ru':
-        return 'второе';
-      default:
-        return this.getSecond('en');
-     }
-  }
-  
-  private getThird(language: string): string {
-     switch (language) {
-      case 'en':
-      case 'en-us':
-        return 'third';
-      case 'nl':
-        return 'derde';
-      case 'fr':
-        return 'troisième';
-      case 'ru':
-        return 'третье';
-      default:
-        return this.getThird('en');
-     }
+    this.templateJson = TranslationHelper.getTemplate(this.language);
   }
 
 }
