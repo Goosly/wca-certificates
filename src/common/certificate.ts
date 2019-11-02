@@ -5,6 +5,8 @@ export class Certificate {
   name: string;
   place: string;
   event: string;
+  resultType: string;
   result: string;
+  resultUnit: string;
   locationAndDate: string;
 }

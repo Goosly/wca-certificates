@@ -22,8 +22,9 @@ export class TranslationHelper {
                     '" at ",' + '\n' +
                     '{"text": "certificate.event", "bold": "true"},' + '\n' +
                     '"\\n",' + '\n' +
-                    '"with a result of ",' + '\n' +
-                    '{"text": "certificate.result", "bold": "true"}' + '\n' +
+                    '"with certificate.resultType of ",' + '\n' +
+                    '{"text": "certificate.result", "bold": "true"},' + '\n' +
+                    '" certificate.resultUnit"' + '\n' +
                     ']';
             case 'en-us':
                 return '[' + '\n' +
@@ -44,8 +45,9 @@ export class TranslationHelper {
                     '" at ",' + '\n' +
                     '{"text": "certificate.event", "bold": "true"},' + '\n' +
                     '"\\n",' + '\n' +
-                    '"with a result of ",' + '\n' +
-                    '{"text": "certificate.result", "bold": "true"}' + '\n' +
+                    '"with certificate.resultType of ",' + '\n' +
+                    '{"text": "certificate.result", "bold": "true"},' + '\n' +
+                    '" certificate.resultUnit"' + '\n' +
                     ']';
             case 'nl':
                 return '[' + '\n' +
@@ -66,8 +68,9 @@ export class TranslationHelper {
                     '" plaats heeft behaald bij ",' + '\n' +
                     '{"text": "certificate.event", "bold": "true"},' + '\n' +
                     '"\\n",' + '\n' +
-                    '"met een resultaat van ",' + '\n' +
-                    '{"text": "certificate.result", "bold": "true"}' + '\n' +
+                    '"met certificate.resultType van ",' + '\n' +
+                    '{"text": "certificate.result", "bold": "true"},' + '\n' +
+                    '" certificate.resultUnit"' + '\n' +
                     ']';
             case 'fr':
                 return '[' + '\n' +
@@ -88,8 +91,9 @@ export class TranslationHelper {
                     '" place au ",' + '\n' +
                     '{"text": "certificate.event", "bold": "true"},' + '\n' +
                     '"\\n",' + '\n' +
-                    '"avec un résultat de ",' + '\n' +
-                    '{"text": "certificate.result", "bold": "true"}' + '\n' +
+                    '"avec certificate.resultType de ",' + '\n' +
+                    '{"text": "certificate.result", "bold": "true"},' + '\n' +
+                    '" certificate.resultUnit"' + '\n' +
                     ']';
             case 'ru':
                 return '[' + '\n' +
@@ -110,8 +114,9 @@ export class TranslationHelper {
                     '" место в дисциплине ",' + '\n' +
                     '{"text": "certificate.event", "bold": "true"},' + '\n' +
                     '"\\n",' + '\n' +
-                    '"с результатом ",' + '\n' +
-                    '{"text": "certificate.result", "bold": "true"}' + '\n' +
+                    '"с certificate.resultType ",' + '\n' +
+                    '{"text": "certificate.result", "bold": "true"},' + '\n' +
+                    '" certificate.resultUnit"' + '\n' +
                     ']';
             default:
                 return this.getTemplate('en');
@@ -179,6 +184,86 @@ export class TranslationHelper {
                 return 'третье';
             default:
                 return this.getThird('en');
+        }
+    }
+
+    public static getMoves(language: string): string {
+        switch (language) {
+            case 'en':
+            case 'en-us':
+                return 'moves';
+            case 'nl':
+                return 'draaien';
+            case 'fr':
+                return 'mouvements';
+            case 'ru':
+                return '';
+            default:
+                return this.getMoves('en');
+        }
+    }
+
+    public static getAResult(language: string): string {
+        switch (language) {
+            case 'en':
+            case 'en-us':
+                return 'a result';
+            case 'nl':
+                return 'een resultaat';
+            case 'fr':
+                return 'un résultat';
+            case 'ru':
+                return 'результатом';
+            default:
+                return this.getAResult('en');
+        }
+    }
+
+    static getAnAverage(language: string) {
+        switch (language) {
+            case 'en':
+            case 'en-us':
+                return 'an average';
+            case 'nl':
+                return 'een gemiddelde';
+            case 'fr':
+                return 'une moyenne';
+            case 'ru':
+                return 'результатом';
+            default:
+                return this.getAnAverage('en');
+        }
+    }
+
+    static getAMean(language: string) {
+        switch (language) {
+            case 'en':
+            case 'en-us':
+                return 'a mean';
+            case 'nl':
+                return 'een gemiddelde';
+            case 'fr':
+                return 'une moyenne';
+            case 'ru':
+                return 'результатом';
+            default:
+                return this.getAMean('en');
+        }
+    }
+
+    static getASingle(language: string) {
+        switch (language) {
+            case 'en':
+            case 'en-us':
+                return 'a best result';
+            case 'nl':
+                return 'een beste resultaat';
+            case 'fr':
+                return 'un meilleur';
+            case 'ru':
+                return 'результатом';
+            default:
+                return this.getASingle('en');
         }
     }
 
