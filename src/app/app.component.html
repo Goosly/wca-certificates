@@ -39,6 +39,11 @@
     
   <!-- CUSTOMIZE TEXT AND STYLING -->
     <div *ngIf="competitionId && wcif && state === 'EDIT'">
+      Page orientation:&nbsp;&nbsp;<select class='form-control' [(ngModel)]='printService.pageOrientation'>
+        <option value='landscape'>Landscape</option>
+        <option value='portrait'>Portrait</option>
+      </select><br><br>
+      <input type="checkbox" [(ngModel)]='printService.showLocalNames'/>Show local names<br><br>
       <select class='form-control' [(ngModel)]='printService.language'>
         <option value='nl'>Dutch</option>
         <option value='en'>English (UK)</option>

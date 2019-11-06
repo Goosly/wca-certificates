@@ -36,7 +36,7 @@ export class ApiService {
     let url = `${environment.wcaUrl}/api/v0/competitions?managed_by_me=true`;
     if (! environment.testMode) {
       const startDate = new Date();
-      startDate.setDate(startDate.getDate() - 7);
+      startDate.setDate(startDate.getDate() - 21);
       url += `&start=${startDate.toISOString()}`;
     }
     return this.httpClient.get(url, {headers: this.headerParams});

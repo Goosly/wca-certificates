@@ -15,6 +15,8 @@ declare var pdfMake: any;
 export class PrintService {
 
     public language = 'en';
+    public pageOrientation = 'landscape';
+    public showLocalNames = true;
 
     public templateJson = '';
 
@@ -134,7 +136,8 @@ export class PrintService {
         s = s.replace('certificate.delegate', certificate.delegate);
         s = s.replace('certificate.organizers', certificate.organizers);
         s = s.replace('certificate.competitionName', certificate.competitionName);
-        s = s.replace('certificate.name', certificate.name);
+        s = s.replace('certificate.name', this.showLocalNames ? certificate.name
+                : (certificate.name).replace(new RegExp(' \\(.+\\)'), ''));
         s = s.replace('certificate.place', certificate.place);
         s = s.replace('certificate.event', certificate.event);
         s = s.replace('certificate.resultType', certificate.resultType);
@@ -179,7 +182,7 @@ export class PrintService {
 
     private getDocument(): any {
         return {
-            pageOrientation: 'landscape',
+            pageOrientation: this.pageOrientation,
             content: [],
             pageMargins: [100, 60, 100, 60],
             defaultStyle: {
