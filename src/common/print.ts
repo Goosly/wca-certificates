@@ -101,10 +101,11 @@ export class PrintService {
         let persons = wcif.persons.filter(p => p.roles.includes(role));
         persons.sort((a, b) => a.name.localeCompare(b.name));
         if (persons.length === 1) {
-            return persons[0].name;
+            return this.formatName(persons[0].name);
         } else {
             let last = persons.pop();
-            return persons.map(p => p.name).join(', ') + ' ' + TranslationHelper.getAnd(this.language) + ' ' + last.name;
+            return persons.map(p => this.formatName(p.name)).join(', ')
+                + ' ' + TranslationHelper.getAnd(this.language) + ' ' + this.formatName(last.name);
         }
     }
 
@@ -136,8 +137,7 @@ export class PrintService {
         s = s.replace('certificate.delegate', certificate.delegate);
         s = s.replace('certificate.organizers', certificate.organizers);
         s = s.replace('certificate.competitionName', certificate.competitionName);
-        s = s.replace('certificate.name', this.showLocalNames ? certificate.name
-                : (certificate.name).replace(new RegExp(' \\(.+\\)'), ''));
+        s = s.replace('certificate.name', this.formatName(certificate.name));
         s = s.replace('certificate.place', certificate.place);
         s = s.replace('certificate.event', certificate.event);
         s = s.replace('certificate.resultType', certificate.resultType);
@@ -145,6 +145,11 @@ export class PrintService {
         s = s.replace('certificate.resultUnit', certificate.resultUnit);
         s = s.replace('certificate.locationAndDate', certificate.locationAndDate);
         return s;
+    }
+    
+    private formatName(name: string) {
+        return this.showLocalNames ? name
+                : (name).replace(new RegExp(' \\(.+\\)'), ''));
     }
 
     public printCertificates(wcif: any, events: string[]) {
