@@ -149,7 +149,7 @@ export class PrintService {
     
     private formatName(name: string) {
         return this.showLocalNames ? name
-                : (name).replace(new RegExp(' \\(.+\\)'), ''));
+                : (name).replace(new RegExp(' \\(.+\\)'), '');
     }
 
     public printCertificates(wcif: any, events: string[]) {
