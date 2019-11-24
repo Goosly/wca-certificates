@@ -12,7 +12,7 @@ declare var $ :any;
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent  {
-  state: 'PRINT' | 'EDIT' = 'PRINT';
+  state: 'PRINT' | 'EDIT' | 'REFRESHING' = 'PRINT';
   
   // Info about competitions managed by user
   competitionsToChooseFrom: Array<String> = null;
@@ -43,6 +43,15 @@ export class AppComponent  {
 
   handleCompetitionSelected(competitionId: string) {
     this.competitionId = competitionId;
+    this.loadWcif(this.competitionId);
+  }
+  
+  handleRefreshCompetition() {
+    this.state = 'REFRESHING';
+    this.loadWcif(this.competitionId);
+  }
+  
+  private loadWcif(competitionId: string) {
     this.apiService.getWcif(this.competitionId).subscribe(wcif => {
       this.wcif = wcif;
       try {
@@ -51,6 +60,7 @@ export class AppComponent  {
           if (environment.testMode && e.id === '666')
             e["printCertificate"] = true;
         });
+        this.state = 'PRINT';
       } catch (error) {
         console.error(error);
         this.wcif = null;

@@ -22,7 +22,8 @@
       <p> Selected competition: {{ competitionId }}<br><br>
       <button (click)="printEmptyCertificate()"
         >Empty certificate for {{ competitionId }}</button><br><br>
-      {{ events?.length }} events found:</p>
+      {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
+        >Refresh results</button></p>
       
       <table>
       <tr *ngFor="let event of wcif.events">
@@ -35,6 +36,11 @@
       <button (click)="printCertificates()"
         [disabled]="buttonDisabled()">Download pdf</button><br><br>
       <a href='https://drive.google.com/open?id=1wGd7Ijc3cU8xbO4s39jy5qQU8hylMRda' target="_blank">Example background</a>
+    </div>
+    
+  <!-- REFRESH -->
+    <div *ngIf="state === 'REFRESHING'">
+      <p>Refreshing...</p>
     </div>
     
   <!-- CUSTOMIZE TEXT AND STYLING -->
