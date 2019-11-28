@@ -18,6 +18,7 @@ export class PrintService {
     public pageOrientation : 'landscape' | 'portrait' = 'landscape';
     public showLocalNames = false;
     public background: string = null;
+    public countries: string = '';
 
     public templateJson = '';
 
@@ -85,7 +86,7 @@ export class PrintService {
     private formatResultForEvent(result: Result, eventId: string): string {
         switch (eventId) {
             case '333fm':
-                return formatFmcMean(result['average']) || result['best'];
+                return this.formatFmcMean(result['average']) || result['best'];
             case '333bf':
             case '444bf':
             case '555bf':
@@ -102,7 +103,7 @@ export class PrintService {
       if (mean === null || mean === undefined) {
         return null;
       }
-      return average.substring(0, 2) + "." + average.substring(2);
+      return mean.substring(0, 2) + "." + mean.substring(2);
     }
 
     private getPersonsWithRole(wcif: any, role: string): string {
