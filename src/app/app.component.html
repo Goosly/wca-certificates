@@ -34,8 +34,7 @@
       </table><br>
       <button (click)="state = 'EDIT'">Customize text and styling</button><br><br>
       <button (click)="printCertificates()"
-        [disabled]="buttonDisabled()">Download pdf</button><br><br>
-      <a href='https://drive.google.com/open?id=1wGd7Ijc3cU8xbO4s39jy5qQU8hylMRda' target="_blank">Example background</a>
+        [disabled]="printDisabled()">Download pdf</button>
     </div>
     
   <!-- REFRESH -->
@@ -59,6 +58,7 @@
       </select>&nbsp;&nbsp;
       <button (click)="printService.loadLanguageTemplate()">Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
       <textarea [(ngModel)]="printService.templateJson"></textarea><br><br>
+      Background design: <input type="file" (change)="printService.handleBackgroundSelected($event.target.files)"/><br><br>
       <button (click)="state = 'PRINT'">Go back to printing</button>
     </div>
     

@@ -15,8 +15,9 @@ declare var pdfMake: any;
 export class PrintService {
 
     public language = 'en';
-    public pageOrientation = 'landscape';
-    public showLocalNames = true;
+    public pageOrientation : 'landscape' | 'portrait' = 'landscape';
+    public showLocalNames = false;
+    public background: string = null;
 
     public templateJson = '';
 
@@ -123,7 +124,7 @@ export class PrintService {
         return '';
     }
 
-    getOneCertificateContent(certificate: Certificate) {
+    private getOneCertificateContent(certificate: Certificate) {
         let jsonWithReplacedStrings = this.replaceStringsIn(this.templateJson, certificate);
         let textObject = JSON.parse(jsonWithReplacedStrings);
         return {
@@ -178,7 +179,15 @@ export class PrintService {
         let document = this.getDocument();
         document.content.push(this.getOneCertificateContent(this.getEmptyCertificate(wcif)));
         this.removeLastPageBreak(document);
-        pdfMake.createPdf(document).download('Empty certificate - ' + wcif.name + '.pdf');
+        pdfMake.createPdf(document).download('Empty certificate ' + wcif.name + '.pdf');
+    }
+
+    public handleBackgroundSelected(files: FileList) {
+      let reader = new FileReader();
+      reader.readAsDataURL(files.item(0));
+      reader.onloadend = function (e) {
+        this.background = reader.result;
+      }.bind(this);
     }
 
     private removeLastPageBreak(document: any): void {
@@ -186,7 +195,7 @@ export class PrintService {
     }
 
     private getDocument(): any {
-        return {
+        let document = {
             pageOrientation: this.pageOrientation,
             content: [],
             pageMargins: [100, 60, 100, 60],
@@ -194,6 +203,14 @@ export class PrintService {
                 fontSize: 22
             }
         };
+        if (this.background !== null) {
+          document.background = {
+            image: this.background,
+            width: this.pageOrientation === 'landscape' ? 840 : 594,
+            alignment: 'center'
+          };
+        }
+        return document;
     }
 
     private downloadFile(data: string, filename: string) {

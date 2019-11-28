@@ -57,7 +57,7 @@ export class AppComponent  {
       try {
         this.events = this.wcif["events"];
         this.events.forEach(function(e) {
-          if (environment.testMode && e.id === '666')
+          if (environment.testMode && e.id === '333fm')
             e["printCertificate"] = true;
         });
         this.state = 'PRINT';
@@ -97,7 +97,7 @@ export class AppComponent  {
     }
   }
   
-  buttonDisabled(): boolean {
+  printDisabled(): boolean {
     return this.events.filter(e => e["printCertificate"]).length === 0;
   }
 
