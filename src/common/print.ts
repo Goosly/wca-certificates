@@ -204,7 +204,7 @@ export class PrintService {
             }
         };
         if (this.background !== null) {
-          document.background = {
+          document['background'] = {
             image: this.background,
             width: this.pageOrientation === 'landscape' ? 840 : 594,
             alignment: 'center'
