@@ -85,7 +85,7 @@ export class PrintService {
     private formatResultForEvent(result: Result, eventId: string): string {
         switch (eventId) {
             case '333fm':
-                return result['average'] || result['best'];
+                return formatFmcMean(result['average']) || result['best'];
             case '333bf':
             case '444bf':
             case '555bf':
@@ -96,6 +96,13 @@ export class PrintService {
             default:
                 return formatCentiseconds(result['average'] || result['best']);
         }
+    }
+    
+    private formatFmcMean(mean: string) {
+      if (mean === null || mean === undefined) {
+        return null;
+      }
+      return average.substring(0, 2) + "." + average.substring(2);
     }
 
     private getPersonsWithRole(wcif: any, role: string): string {
