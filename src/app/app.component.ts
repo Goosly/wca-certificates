@@ -55,8 +55,20 @@ export class AppComponent  {
     this.apiService.getWcif(this.competitionId).subscribe(wcif => {
       this.wcif = wcif;
       try {
+        if (environment.testMode) {
+          this.wcif.persons.filter(p => p.wcaId === '2014CHER05')[0].countryIso2 = 'BE';
+        }
         this.events = this.wcif["events"];
         this.events.forEach(function(e) {
+          if (environment.testMode && e.id === '333fm')
+            e["printCertificate"] = true;
+        });
+        this.events.forEach(function(e) {
+          let resultsOfEvent = e.rounds[e.rounds.length - 1].results;
+          resultsOfEvent.forEach(function(r) {
+            let personOfResult = wcif.persons.filter(p => p.registrantId === r.personId)[0];
+            r['countryIso2'] = personOfResult.countryIso2;
+          });
           if (environment.testMode && e.id === '333fm')
             e["printCertificate"] = true;
         });
@@ -79,11 +91,16 @@ export class AppComponent  {
   }
   
   getWarningIfAny(eventId: string): string {
-    let event: Event = this.wcif.events.filter(e => e.id === eventId)[0];
+    let event: Event = this.events.filter(e => e.id === eventId)[0];
     let results: Result[] = event.rounds[event.rounds.length - 1].results;
-    let podiumPlaces = results.filter(r => r.ranking !== null && r.ranking <= 3 && r['best'] > 0).length;
+    results = this.filterResultsWithOnlyDNF(results);
+    results = this.filterResultsByCountry(results);
     
-    switch(podiumPlaces) {
+    let podiumPlaces = this.getPodiumPlaces(results);
+    this.calculateRankingAfterFiltering(podiumPlaces);
+    event['podiumPlaces'] = podiumPlaces;
+    
+    switch(podiumPlaces.length) {
       case 0:
         return 'Not available yet';
       case 1:
@@ -95,6 +112,37 @@ export class AppComponent  {
       default:
         return 'More than 3 persons on the podium!';
     }
+  }
+  
+  private filterResultsWithOnlyDNF(results: Result[]): Result[] {
+    return results.filter(r => r['best'] > 0);
+  }
+  
+  private filterResultsByCountry(results: Result[]): Result[] {
+    if (!! this.printService.countries && this.printService.countries.length > 0) {
+      return results.filter(r => this.printService.countries.split(';').includes(r['countryIso2']));
+    }
+    return results;
+  }
+  
+  private getPodiumPlaces(results: Result[]): Result[] {
+    let podiumPlaces = results.slice(0, 3);
+    if (podiumPlaces.length >= 3) {
+      let i = 3;
+      while(i < results.length) {
+        if (podiumPlaces[i - 1].ranking === results[i].ranking) {
+          podiumPlaces.push(results[i]);
+        }
+        i++;
+      }
+    }
+    return podiumPlaces;
+  }
+  
+  private calculateRankingAfterFiltering(podiumPlaces: Result[]): void {
+    podiumPlaces.forEach(function(p) {
+      p['rankingAfterFiltering'] = podiumPlaces.filter(o => o.ranking < p.ranking).length + 1;
+    });
   }
   
   printDisabled(): boolean {

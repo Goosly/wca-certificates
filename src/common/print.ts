@@ -59,7 +59,7 @@ export class PrintService {
         certificate.organizers = this.getPersonsWithRole(wcif, 'organizer');
         certificate.competitionName = wcif.name;
         certificate.name = wcif.persons.filter(p => p.registrantId === result.personId)[0].name;
-        certificate.place = this.getPlace(result.ranking);
+        certificate.place = this.getPlace(result['rankingAfterFiltering']);
         certificate.event = this.getEvent(eventId).label;
         certificate.resultType = this.getResultType(format, result);
         certificate.result = this.formatResultForEvent(result, eventId);
@@ -166,9 +166,8 @@ export class PrintService {
         let atLeastOneCertificate = false;
         for (let i = 0; i < events.length; i++) {
             let event: Event = wcif.events.filter(e => e.id === events[i])[0];
-            let results: Result[] = event.rounds[event.rounds.length - 1].results;
+            let podiumPlaces = event['podiumPlaces'];
             let format = event.rounds[event.rounds.length - 1].format;
-            let podiumPlaces = results.filter(r => r.ranking !== null && r.ranking <= 3);
 
             for (let p = 0; p < podiumPlaces.length; p++) {
                 document.content.push(this.getOneCertificateContent(this.getNewCertificate(wcif, events[i], format, podiumPlaces[p])));
