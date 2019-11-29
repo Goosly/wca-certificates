@@ -86,7 +86,7 @@ export class PrintService {
     private formatResultForEvent(result: Result, eventId: string): string {
         switch (eventId) {
             case '333fm':
-                return this.formatFmcMean(result['average']) || result['best'];
+                return result['average'] > 0 ? this.formatFmcMean(result['average']) : result['best'];
             case '333bf':
             case '444bf':
             case '555bf':
@@ -95,7 +95,7 @@ export class PrintService {
                 let mbldResult: string = result['best'];
                 return formatMultiResult(decodeMultiResult('0' + mbldResult));
             default:
-                return formatCentiseconds(result['average'] || result['best']);
+                return formatCentiseconds(result['average'] > 0 ? result['average'] : result['best']);
         }
     }
     

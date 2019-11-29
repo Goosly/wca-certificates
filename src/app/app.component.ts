@@ -81,7 +81,7 @@ export class AppComponent  {
   getWarningIfAny(eventId: string): string {
     let event: Event = this.wcif.events.filter(e => e.id === eventId)[0];
     let results: Result[] = event.rounds[event.rounds.length - 1].results;
-    let podiumPlaces = results.filter(r => r.ranking !== null && r.ranking <= 3).length;
+    let podiumPlaces = results.filter(r => r.ranking !== null && r.ranking <= 3 && r['best'] > 0).length;
     
     switch(podiumPlaces) {
       case 0:
