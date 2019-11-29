@@ -44,7 +44,6 @@
     
   <!-- CUSTOMIZE TEXT AND STYLING -->
     <div *ngIf="competitionId && wcif && state === 'EDIT'">
-      Only use competitors from countries:&nbsp;&nbsp;<input [(ngModel)]='printService.countries' type="text"/>
       Page orientation:&nbsp;&nbsp;<select class='form-control' [(ngModel)]='printService.pageOrientation'>
         <option value='landscape'>Landscape</option>
         <option value='portrait'>Portrait</option>
