@@ -129,7 +129,7 @@ export class AppComponent  {
     let podiumPlaces = results.slice(0, 3);
     if (podiumPlaces.length >= 3) {
       let i = 3;
-      while(i < results.length) {
+      while(i < results.length && i < (podiumPlaces.length - 1)) {
         if (podiumPlaces[i - 1].ranking === results[i].ranking) {
           podiumPlaces.push(results[i]);
         }

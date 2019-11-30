@@ -240,10 +240,10 @@ export class PrintService {
     private getResultType(format: string, result: Result) {
         switch (format) {
             case 'a':
-                return (result['average'] !== null) ? TranslationHelper.getAnAverage(this.language)
+                return (result['average'] > 0) ? TranslationHelper.getAnAverage(this.language)
                     : TranslationHelper.getASingle(this.language);
             case 'm':
-                return (result['average'] !== null) ? TranslationHelper.getAMean(this.language)
+                return (result['average'] > 0) ? TranslationHelper.getAMean(this.language)
                     : TranslationHelper.getASingle(this.language);
             case '1':
             case '2':
