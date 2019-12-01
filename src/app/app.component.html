@@ -1,7 +1,9 @@
-<div class="center">
-  <h1>WCA Competition Certificates</h1>
-  <div class="centered" >
+<div class="wrapper">
+  <div class="header center"> 
+    <h1>WCA Competition Certificates</h1>
+  </div>
   
+  <div class="content center">
   <!-- LOGIN -->
     <div *ngIf="! apiService.oauthToken">
       <button class="login" (click)="handleLoginToWca()">First: login</button><br>
@@ -25,14 +27,14 @@
       {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
         ><i class="fa fa-refresh"></i> Refresh results</button></p>
       
-      <table>
+      <table class="center">
       <tr *ngFor="let event of wcif.events">
         <td><input type="checkbox" [(ngModel)]="event.printCertificate"></td>
         <td>{{ printService.getEvent(event.id)?.label }}</td>
         <td>{{ getWarningIfAny(event.id) }}</td>
       </tr>
       </table><br>
-      <button (click)="state = 'EDIT'"><i class="fa fa-cog"></i> Customize text and styling</button><br><br>
+      <button (click)="state = 'EDIT'"><i class="fa fa-cog"></i> Customize</button><br><br>
       <button (click)="printCertificates()"
         [disabled]="printDisabled()"><i class="fa fa-download"></i> Download pdf</button>
     </div>
@@ -42,9 +44,9 @@
       <p>Refreshing...</p>
     </div>
     
-  <!-- CUSTOMIZE TEXT AND STYLING -->
+  <!-- CUSTOMIZE -->
     <div *ngIf="competitionId && wcif && state === 'EDIT'">
-      Only use competitors from countries with ISO (colon-separated):&nbsp;&nbsp;<input [(ngModel)]='printService.countries' type="text"/><br><br>
+      Only use competitors from countries with ISO (semicolon-separated):&nbsp;&nbsp;<input [(ngModel)]='printService.countries' type="text"/><br><br>
       Page orientation:&nbsp;&nbsp;<select class='form-control' [(ngModel)]='printService.pageOrientation'>
         <option value='landscape'>Landscape</option>
         <option value='portrait'>Portrait</option>
