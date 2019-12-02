@@ -114,7 +114,7 @@ export class TranslationHelper {
                     '" место в дисциплине ",' + '\n' +
                     '{"text": "certificate.event", "bold": "true"},' + '\n' +
                     '"\\n",' + '\n' +
-                    '"с certificate.resultType ",' + '\n' +
+                    '"certificate.resultType ",' + '\n' +
                     '{"text": "certificate.result", "bold": "true"},' + '\n' +
                     '" certificate.resultUnit"' + '\n' +
                     ']';
@@ -197,7 +197,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'mouvements';
             case 'ru':
-                return '';
+                return 'ходов';
             default:
                 return this.getMoves('en');
         }
@@ -213,7 +213,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'un résultat';
             case 'ru':
-                return 'результатом';
+                return 'с результатом';
             default:
                 return this.getAResult('en');
         }
@@ -229,7 +229,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'une moyenne';
             case 'ru':
-                return 'результатом';
+                return 'со средним';
             default:
                 return this.getAnAverage('en');
         }
@@ -245,7 +245,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'une moyenne';
             case 'ru':
-                return 'результатом';
+                return 'со средним';
             default:
                 return this.getAMean('en');
         }
@@ -261,7 +261,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'un meilleur';
             case 'ru':
-                return 'результатом';
+                return 'с лучшим';
             default:
                 return this.getASingle('en');
         }
