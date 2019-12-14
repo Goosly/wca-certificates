@@ -55,14 +55,7 @@ export class AppComponent  {
     this.apiService.getWcif(this.competitionId).subscribe(wcif => {
       this.wcif = wcif;
       try {
-        if (environment.testMode) {
-          this.wcif.persons.filter(p => p.wcaId === '2014CHER05')[0].countryIso2 = 'BE';
-        }
         this.events = this.wcif["events"];
-        this.events.forEach(function(e) {
-          if (environment.testMode && e.id === '333fm')
-            e["printCertificate"] = true;
-        });
         this.events.forEach(function(e) {
           let resultsOfEvent = e.rounds[e.rounds.length - 1].results;
           resultsOfEvent.forEach(function(r) {

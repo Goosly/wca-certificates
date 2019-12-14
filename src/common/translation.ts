@@ -197,7 +197,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'mouvements';
             case 'ru':
-                return 'ходов';
+                return ''; // Russian has different words depending on the number, too hard :(
             default:
                 return this.getMoves('en');
         }
