@@ -99,11 +99,11 @@ export class PrintService {
         }
     }
     
-    private formatFmcMean(mean: string) {
+    private formatFmcMean(mean: number) {
       if (mean === null || mean === undefined) {
         return null;
       }
-      return mean.substring(0, 2) + "." + mean.substring(2);
+      return mean.toString().substring(0, 2) + '.' + mean.toString().substring(2);
     }
 
     private getPersonsWithRole(wcif: any, role: string): string {
