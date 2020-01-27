@@ -245,7 +245,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'une moyenne';
             case 'ru':
-                return 'со средним';
+                return 'со средним результатом';
             default:
                 return this.getAMean('en');
         }
@@ -261,7 +261,7 @@ export class TranslationHelper {
             case 'fr':
                 return 'un meilleur';
             case 'ru':
-                return 'с лучшим';
+                return 'с лучшим результатом';
             default:
                 return this.getASingle('en');
         }
