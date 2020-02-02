@@ -306,18 +306,10 @@ export class PrintService {
       style: 'tableOverview',
       table: {
         headerRows: 1,
-        paddingLeft: function (i, node) {
-          return 0;
-        },
-        paddingRight: function (i, node) {
-          return 0;
-        },
-        paddingTop: function (i, node) {
-          return 2;
-        },
-        paddingBottom: function (i, node) {
-          return 2;
-        },
+        paddingLeft: function (i, node) { return 0; },
+        paddingRight: function (i, node) { return 0; },
+        paddingTop: function (i, node) { return 2; },
+        paddingBottom: function (i, node) { return 2; },
         body: []
       },
       layout: 'lightHorizontalLines',
