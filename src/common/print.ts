@@ -4,8 +4,9 @@ import {Certificate} from './Certificate';
 import {Event} from '@wca/helpers/lib/models/event';
 import {Result} from '@wca/helpers/lib/models/result';
 import {formatCentiseconds} from '@wca/helpers/lib/helpers/time';
-import {decodeMultiResult, formatMultiResult} from '@wca/helpers/lib/helpers/result';
+import {decodeMultiResult, formatMultiResult, isDnf} from '@wca/helpers/lib/helpers/result';
 import {TranslationHelper} from './translation';
+import {getEventName, Person} from '@wca/helpers';
 
 declare var pdfMake: any;
 
@@ -86,7 +87,7 @@ export class PrintService {
     private formatResultForEvent(result: Result, eventId: string): string {
         switch (eventId) {
             case '333fm':
-                return result['average'] > 0 ? this.formatFmcMean(result['average']) : result['best'];
+                return result['average'] > 0 ? this.formatFmcMean(result['average']) : isDnf(result['best']) ? 'DNF' : result['best'];
             case '333bf':
             case '444bf':
             case '555bf':
@@ -98,8 +99,11 @@ export class PrintService {
                 return formatCentiseconds(result['average'] > 0 ? result['average'] : result['best']);
         }
     }
-    
+
     private formatFmcMean(mean: number) {
+      if (mean === -1) {
+        return 'DNF';
+      }
       if (mean === null || mean === undefined) {
         return null;
       }
@@ -155,7 +159,7 @@ export class PrintService {
         s = s.replace('certificate.locationAndDate', certificate.locationAndDate);
         return s;
     }
-    
+
     private formatName(name: string) {
         return this.showLocalNames ? name
                 : (name).replace(new RegExp(' \\(.+\\)'), '');
@@ -201,24 +205,29 @@ export class PrintService {
         document.content[document.content.length - 1].pageBreak = '';
     }
 
-    private getDocument(): any {
-        let document = {
-            pageOrientation: this.pageOrientation,
-            content: [],
-            pageMargins: [100, 60, 100, 60],
-            defaultStyle: {
-                fontSize: 22
-            }
-        };
-        if (this.background !== null) {
-          document['background'] = {
-            image: this.background,
-            width: this.pageOrientation === 'landscape' ? 840 : 594,
-            alignment: 'center'
-          };
+  private getDocument(): any {
+    const document = {
+      pageOrientation: this.pageOrientation,
+      content: [],
+      pageMargins: [100, 60, 100, 60],
+      styles: {
+        tableOverview: {
+          lineHeight: 0.8
         }
-        return document;
+      },
+      defaultStyle: {
+        fontSize: 22
+      }
+    };
+    if (this.background !== null) {
+      document['background'] = {
+        image: this.background,
+        width: this.pageOrientation === 'landscape' ? 840 : 594,
+        alignment: 'center'
+      };
     }
+    return document;
+  }
 
     private downloadFile(data: string, filename: string) {
         saveAs(new Blob([data]), filename);
@@ -253,4 +262,85 @@ export class PrintService {
                 return TranslationHelper.getAResult(this.language);
         }
     }
+
+  printParticipationCertificates(wcif: any) {
+    const document = this.getDocument();
+    document.defaultStyle.fontSize = 14;
+    wcif.persons.forEach(p => {
+      document.content.push(this.getOneParticipationCertificateFor(p, wcif));
+      document.content.push(this.getResultsTableFor(p, wcif));
+    });
+
+    this.removeLastPageBreak(document);
+    pdfMake.createPdf(document).download('Participation certificates ' + wcif.name + '.pdf');
+  }
+
+  private getOneParticipationCertificateFor(p: Person, wcif: any) {
+    return {
+      text: [
+        {text: this.getPersonsWithRole(wcif, 'delegate'), bold: 'true'},
+        ', on behalf of the ',
+        {text: 'World Cube Association', bold: 'true'},
+        ', and ',
+        {text: this.getPersonsWithRole(wcif, 'organizer'), bold: 'true'},
+        ', on behalf of the organisation team of ',
+        {text: wcif.name, bold: 'true'},
+        ', certify that',
+        '\n\n',
+        {text: p.name, fontSize: '20', bold: 'true'},
+        '\n\n',
+        'has participated in ',
+        {text: wcif.name, bold: 'true'},
+        ', obtaining the following results:',
+        '\n'
+      ],
+      alignment: 'center'
+    };
+  }
+
+  private getResultsTableFor(p: Person, wcif: any) {
+    const table = {
+      width: 'auto',
+      style: 'tableOverview',
+      table: {
+        headerRows: 1,
+        paddingLeft: function (i, node) { return 0; },
+        paddingRight: function (i, node) { return 0; },
+        paddingTop: function (i, node) { return 2; },
+        paddingBottom: function (i, node) { return 2; },
+        body: []
+      },
+      layout: 'lightHorizontalLines',
+      pageBreak: 'after'
+    };
+
+    table.table.body.push(['Event', 'Result', 'Position']);
+    wcif.events.forEach(event => {
+      const array = [getEventName(event.id)];
+      const result: Result = this.findResultOfPersonInEvent(p, event);
+      if (result !== null) { // if competitor has a result in this event
+        array.push(this.formatResultForEvent(result, event.id));
+        array.push(result.ranking.toString());
+        table.table.body.push(array);
+      }
+    });
+
+    return {
+      columns: [
+        { width: '*', text: '' },
+        table,
+        { width: '*', text: '' },
+      ]
+    };
+  }
+
+  private findResultOfPersonInEvent(p: Person, event: Event) {
+    for (let round = event.rounds.length - 1; round >= 0; round--) {
+      const index = event.rounds[round].results.findIndex(r => r.personId === p.registrantId);
+      if (index > 0) {
+        return event.rounds[round].results[index];
+      }
+    }
+    return null;
+  }
 }
