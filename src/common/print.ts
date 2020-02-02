@@ -7,6 +7,7 @@ import {formatCentiseconds} from '@wca/helpers/lib/helpers/time';
 import {decodeMultiResult, formatMultiResult, isDnf} from '@wca/helpers/lib/helpers/result';
 import {TranslationHelper} from './translation';
 import {getEventName, Person} from '@wca/helpers';
+import {Helpers} from './helpers';
 
 declare var pdfMake: any;
 
@@ -266,6 +267,7 @@ export class PrintService {
   printParticipationCertificates(wcif: any) {
     const document = this.getDocument();
     document.defaultStyle.fontSize = 14;
+    Helpers.sortCompetitorsByName(wcif);
     wcif.persons.forEach(p => {
       document.content.push(this.getOneParticipationCertificateFor(p, wcif));
       document.content.push(this.getResultsTableFor(p, wcif));
@@ -292,7 +294,7 @@ export class PrintService {
         'has participated in ',
         {text: wcif.name, bold: 'true'},
         ', obtaining the following results:',
-        '\n'
+        '\n\n'
       ],
       alignment: 'center'
     };
@@ -345,10 +347,11 @@ export class PrintService {
   private findResultOfPersonInEvent(p: Person, event: Event) {
     for (let round = event.rounds.length - 1; round >= 0; round--) {
       const index = event.rounds[round].results.findIndex(r => r.personId === p.registrantId);
-      if (index > 0) {
+      if (index > -1) {
         return event.rounds[round].results[index];
       }
     }
     return null;
   }
+
 }
