@@ -2,6 +2,7 @@ import {Injectable, isDevMode} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../environments/environment';
+import {LogglyService} from '../loggly/loggly.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class ApiService {
 
   public oauthToken;
   private headerParams: HttpHeaders;
+  private logglyService: LogglyService;
 
   private ONE_YEAR = 365;
   private FOUR_WEEKS = 28;
@@ -20,6 +22,17 @@ export class ApiService {
     this.headerParams = new HttpHeaders();
     this.headerParams = this.headerParams.set('Authorization', `Bearer ${this.oauthToken}`);
     this.headerParams = this.headerParams.set('Content-Type', 'application/json');
+
+    this.initLoggly();
+  }
+
+  private initLoggly() {
+    this.logglyService = new LogglyService(this.httpClient);
+    this.logglyService.push({
+      logglyKey: '3c4e81e2-b2ae-40e3-88b5-ba8e8b810586',
+      sendConsoleErrors: false,
+      tag: 'wca-certificates'
+    });
   }
 
   private getToken(): void {
@@ -50,6 +63,26 @@ export class ApiService {
     }
     return this.httpClient.get(`${environment.wcaUrl}/api/v0/competitions/${competitionId}/wcif`,
       {headers: this.headerParams});
+  }
+
+  logUserClicksDownloadCertificates(competitionId: any) {
+    this.logMessage(competitionId + ' - Certificates downloaded');
+  }
+
+  logUserClicksDownloadParticipationCertificates(competitionId: any) {
+    this.logMessage(competitionId + ' - Participation certificates downloaded');
+  }
+
+  private logMessage(message: string) {
+    if (! environment.testMode) {
+      setTimeout(() => {
+        try {
+          this.logglyService.push(message);
+        } catch (e) {
+          console.error(e);
+        }
+      }, 0);
+    }
   }
 
 }

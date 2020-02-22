@@ -77,6 +77,7 @@ export class AppComponent  {
   printCertificates() {
     this.printService.printCertificates(this.wcif,
       Array.from(this.events.filter(e => e["printCertificate"]).map(e => e.id)));
+    this.apiService.logUserClicksDownloadCertificates(this.wcif.id);
   }
 
   printEmptyCertificate() {
@@ -144,5 +145,7 @@ export class AppComponent  {
 
   printParticipationCertificates() {
     this.printService.printParticipationCertificates(this.wcif);
+    this.apiService.logUserClicksDownloadCertificates(this.wcif.id);
   }
+
 }
