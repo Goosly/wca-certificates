@@ -17,42 +17,24 @@ declare var pdfMake: any;
 export class PrintService {
 
   public language = 'en';
+  public participationLanguage = 'en';
   public pageOrientation: 'landscape' | 'portrait' = 'landscape';
+  public participationPageOrientation: 'landscape' | 'portrait' = 'landscape';
   public showLocalNames = false;
   public background: string = null;
+  public participationBackground: string = null;
   public countries: string = '';
 
-  public templateJson = '';
-
-  public eventNames = [
-    {id: '222', label: '2x2x2 Cube'},
-    {id: '333', label: '3x3x3 Cube'},
-    {id: '444', label: '4x4x4 Cube'},
-    {id: '555', label: '5x5x5 Cube'},
-    {id: '666', label: '6x6x6 Cube'},
-    {id: '777', label: '7x7x7 Cube'},
-    {id: '333bf', label: '3x3x3 Blindfolded'},
-    {id: '333oh', label: '3x3x3 One-Handed'},
-    {id: '333ft', label: '3x3x3 With Feet'},
-    {id: 'clock', label: 'Clock'},
-    {id: 'minx', label: 'Megaminx'},
-    {id: 'pyram', label: 'Pyraminx'},
-    {id: 'skewb', label: 'Skewb'},
-    {id: 'sq1', label: 'Square-1'},
-    {id: '444bf', label: '4x4x4 Blindfolded'},
-    {id: '555bf', label: '5x5x5 Blindfolded'},
-    {id: '333mbf', label: '3x3x3 Multi-Blind'},
-    {id: '333fm', label: '3x3x3 Fewest Moves'}
-  ];
+  public podiumCertificateJson = '';
+  public participationCertificateJson = '';
 
   constructor() {
-    this.templateJson = TranslationHelper.getTemplate(this.language);
+    this.podiumCertificateJson = TranslationHelper.getTemplate(this.language);
+    this.participationCertificateJson = TranslationHelper.getParticipationTemplate(this.participationLanguage);
   }
 
-  public getEvent(eventId: string) {
-    return this.eventNames.find(e => {
-      return e.id === eventId;
-    });
+  public getEvent(eventId) {
+    return getEventName(eventId);
   }
 
   private getNewCertificate(wcif: any, eventId: string, format: string, result: Result): Certificate {
@@ -62,7 +44,7 @@ export class PrintService {
     certificate.competitionName = wcif.name;
     certificate.name = wcif.persons.filter(p => p.registrantId === result.personId)[0].name;
     certificate.place = this.getPlace(result['rankingAfterFiltering']);
-    certificate.event = this.getEvent(eventId).label;
+    certificate.event = this.getEvent(eventId);
     certificate.resultType = this.getResultType(format, result);
     certificate.result = this.formatResultForEvent(result, eventId);
     certificate.resultUnit = this.getResultUnit(eventId);
@@ -138,7 +120,7 @@ export class PrintService {
   }
 
   private getOneCertificateContent(certificate: Certificate) {
-    const jsonWithReplacedStrings = this.replaceStringsIn(this.templateJson, certificate);
+    const jsonWithReplacedStrings = this.replaceStringsIn(this.podiumCertificateJson, certificate);
     const textObject = JSON.parse(jsonWithReplacedStrings);
     return {
       text: textObject,
@@ -148,16 +130,16 @@ export class PrintService {
   }
 
   private replaceStringsIn(s: string, certificate: Certificate): string {
-    s = s.replace('certificate.delegate', certificate.delegate);
-    s = s.replace('certificate.organizers', certificate.organizers);
-    s = s.replace('certificate.competitionName', certificate.competitionName);
-    s = s.replace('certificate.name', this.formatName(certificate.name));
-    s = s.replace('certificate.place', certificate.place);
-    s = s.replace('certificate.event', certificate.event);
-    s = s.replace('certificate.resultType', certificate.resultType);
-    s = s.replace('certificate.result', certificate.result);
-    s = s.replace('certificate.resultUnit', certificate.resultUnit);
-    s = s.replace('certificate.locationAndDate', certificate.locationAndDate);
+    s = s.replace(/certificate.delegate/g, certificate.delegate);
+    s = s.replace(/certificate.organizers/g, certificate.organizers);
+    s = s.replace(/certificate.competitionName/g, certificate.competitionName);
+    s = s.replace(/certificate.name/g, this.formatName(certificate.name));
+    s = s.replace(/certificate.place/g, certificate.place);
+    s = s.replace(/certificate.event/g, certificate.event);
+    s = s.replace(/certificate.resultType/g, certificate.resultType);
+    s = s.replace(/certificate.result/g, certificate.result);
+    s = s.replace(/certificate.resultUnit/g, certificate.resultUnit);
+    s = s.replace(/certificate.locationAndDate/g, certificate.locationAndDate);
     return s;
   }
 
@@ -167,7 +149,7 @@ export class PrintService {
   }
 
   public printCertificates(wcif: any, events: string[]) {
-    const document = this.getDocument();
+    const document = this.getDocument(this.pageOrientation, this.background);
     let atLeastOneCertificate = false;
     for (let i = 0; i < events.length; i++) {
       const event: Event = wcif.events.filter(e => e.id === events[i])[0];
@@ -188,7 +170,7 @@ export class PrintService {
   }
 
   public printEmptyCertificate(wcif: any) {
-    const document = this.getDocument();
+    const document = this.getDocument(this.pageOrientation, this.background);
     document.content.push(this.getOneCertificateContent(this.getEmptyCertificate(wcif)));
     this.removeLastPageBreak(document);
     pdfMake.createPdf(document).download('Empty certificate ' + wcif.name + '.pdf');
@@ -202,13 +184,21 @@ export class PrintService {
     }.bind(this);
   }
 
+  public handleParticipationBackgroundSelected(files: FileList) {
+    const reader = new FileReader();
+    reader.readAsDataURL(files.item(0));
+    reader.onloadend = function (e) {
+      this.participationBackground = reader.result;
+    }.bind(this);
+  }
+
   private removeLastPageBreak(document: any): void {
     document.content[document.content.length - 1].pageBreak = '';
   }
 
-  private getDocument(): any {
+  private getDocument(orientation: string, background: string): any {
     const document = {
-      pageOrientation: this.pageOrientation,
+      pageOrientation: orientation,
       content: [],
       pageMargins: [100, 60, 100, 60],
       styles: {
@@ -220,10 +210,10 @@ export class PrintService {
         fontSize: 22
       }
     };
-    if (this.background !== null) {
+    if (background !== null) {
       document['background'] = {
-        image: this.background,
-        width: this.pageOrientation === 'landscape' ? 840 : 594,
+        image: background,
+        width: orientation === 'landscape' ? 840 : 594,
         alignment: 'center'
       };
     }
@@ -235,7 +225,11 @@ export class PrintService {
   }
 
   public loadLanguageTemplate() {
-    this.templateJson = TranslationHelper.getTemplate(this.language);
+    this.podiumCertificateJson = TranslationHelper.getTemplate(this.language);
+  }
+
+  public loadLanguageParticipationTemplate() {
+    this.participationCertificateJson = TranslationHelper.getParticipationTemplate(this.participationLanguage);
   }
 
   private getResultUnit(eventId: string) {
@@ -265,11 +259,12 @@ export class PrintService {
   }
 
   printParticipationCertificates(wcif: any) {
-    const document = this.getDocument();
+    const document = this.getDocument(this.participationPageOrientation, this.participationBackground);
     document.defaultStyle.fontSize = 14;
     Helpers.sortCompetitorsByName(wcif);
     wcif.persons.forEach(p => {
-      document.content.push(this.getOneParticipationCertificateFor(p, wcif));
+      const certificate = this.getParticipationCertificate(wcif, p);
+      document.content.push(this.getOneParticipationCertificateFor(certificate));
       document.content.push(this.getResultsTableFor(p, wcif));
     });
 
@@ -277,27 +272,22 @@ export class PrintService {
     pdfMake.createPdf(document).download('Participation certificates ' + wcif.name + '.pdf');
   }
 
-  private getOneParticipationCertificateFor(p: Person, wcif: any) {
+  private getOneParticipationCertificateFor(certificate: Certificate) {
+    const jsonWithReplacedStrings = this.replaceStringsIn(this.participationCertificateJson, certificate);
+    const textObject = JSON.parse(jsonWithReplacedStrings);
     return {
-      text: [
-        {text: this.getPersonsWithRole(wcif, 'delegate'), bold: 'true'},
-        ', on behalf of the ',
-        {text: 'World Cube Association', bold: 'true'},
-        ', and ',
-        {text: this.getPersonsWithRole(wcif, 'organizer'), bold: 'true'},
-        ', on behalf of the organisation team of ',
-        {text: wcif.name, bold: 'true'},
-        ', certify that',
-        '\n\n',
-        {text: p.name, fontSize: '20', bold: 'true'},
-        '\n\n',
-        'has participated in ',
-        {text: wcif.name, bold: 'true'},
-        ', obtaining the following results:',
-        '\n\n'
-      ],
+      text: textObject,
       alignment: 'center'
     };
+  }
+
+  private getParticipationCertificate(wcif: any, p: Person) {
+    const certificate = new Certificate();
+    certificate.delegate = this.getPersonsWithRole(wcif, 'delegate');
+    certificate.organizers = this.getPersonsWithRole(wcif, 'organizer');
+    certificate.competitionName = wcif.name;
+    certificate.name = p.name;
+    return certificate;
   }
 
   private getResultsTableFor(p: Person, wcif: any) {

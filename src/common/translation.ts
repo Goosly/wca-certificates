@@ -123,6 +123,68 @@ export class TranslationHelper {
         }
     }
 
+    public static getParticipationTemplate(language: string): string {
+      // todo languages
+      switch (language) {
+        case 'en':
+          return '[' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+            '", on behalf of the ",' + '\n' +
+            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+            '", and ",' + '\n' +
+            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+            '", on behalf of the organisation team of ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '", certify that",' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '"has participated in ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '", obtaining the following results:\\n\\n"' + '\n' +
+            ']';
+        case 'en-us':
+          return '[' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+            '", on behalf of the ",' + '\n' +
+            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+            '", and ",' + '\n' +
+            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+            '", on behalf of the organization team of ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '", certify that",' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '"has participated in ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '", obtaining the following results:\\n\\n"' + '\n' +
+            ']';
+        case 'nl':
+          return '[' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+            '", namens de ",' + '\n' +
+            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+            '", en ",' + '\n' +
+            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+            '", namens het organisatieteam van ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '", verklaren dat",' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '"heeft deelgenomen aan ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '" en de volgende resultaten heeft behaald:\\n\\n"' + '\n' +
+            ']';
+        default:
+          return '';
+      }
+    }
+
     public static getAnd(language: string): string {
         switch (language) {
             case 'en':
