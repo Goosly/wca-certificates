@@ -21,7 +21,7 @@
 
     <div *ngIf="competitionId && wcif">
       <mat-tab-group>
-        <mat-tab label="Podium certificates">
+        <mat-tab label="Print podium certificates">
           <br>
           <div *ngIf="state === 'REFRESHING'">
             <p>Refreshing...</p>
@@ -44,7 +44,7 @@
                     [disabled]="printDisabled()"><i class="fa fa-download"></i> Download pdf</button>
           </div>
         </mat-tab>
-        <mat-tab label="Customize podium">
+        <mat-tab label="Customize podium certificates">
           <!-- CUSTOMIZE -->
           <div>
             <br>
@@ -66,7 +66,7 @@
             Only use competitors from countries with ISO (semicolon-separated):&nbsp;&nbsp;<input [(ngModel)]='printService.countries' type="text"/><br><br>
           </div>
         </mat-tab>
-        <mat-tab label="Participation certificates">
+        <mat-tab label="Print participation certificates">
           <br>
           <div *ngIf="state === 'REFRESHING'">
             <p>Refreshing...</p>
@@ -78,13 +78,13 @@
             <button (click)="printParticipationCertificates()"><i class="fa fa-download"></i> Download participation certificates</button>
           </div>
         </mat-tab>
-        <mat-tab label="Customize participation">
+        <mat-tab label="Customize participation certificates">
           <br>
           <select class='form-control' [(ngModel)]='printService.participationLanguage'>
             <option value='nl'>Dutch</option>
             <option value='en'>English (UK)</option>
             <option value='en-us'>English (US)</option>
-          </select>
+          </select>&nbsp;&nbsp;
           <button (click)="printService.loadLanguageParticipationTemplate()"><i class="fa fa-refresh"></i> Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
           <textarea [(ngModel)]="printService.participationCertificateJson"></textarea><br><br>
           Background design: <input type="file" (change)="printService.handleParticipationBackgroundSelected($event.target.files)"/><br><br>
