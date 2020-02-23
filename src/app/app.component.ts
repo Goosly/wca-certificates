@@ -14,7 +14,7 @@ declare var $ :any;
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent  {
-  state: 'PRINT' | 'EDIT' | 'REFRESHING' = 'PRINT';
+  state: 'PRINT' | 'REFRESHING' = 'PRINT';
 
   // Info about competitions managed by user
   competitionsToChooseFrom: Array<String> = null;

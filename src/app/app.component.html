@@ -19,25 +19,30 @@
       <p *ngIf="!!competitionsToChooseFrom && competitionsToChooseFrom.length === 0">You don't have any competition available :-(</p>
     </div>
 
-    <!-- REFRESH -->
-    <div *ngIf="state === 'REFRESHING'">
-      <p>Refreshing...</p>
-    </div>
-
-    <div *ngIf="competitionId && wcif && state !== 'REFRESHING'">
+    <div *ngIf="competitionId && wcif">
       <mat-tab-group>
         <mat-tab label="Podium">
           <br>
-          <!-- INFORMATION ABOUT COMP AND PRINTING -->
-          <table class="center">
-            <tr *ngFor="let event of wcif.events">
-              <td><input type="checkbox" [(ngModel)]="event.printCertificate"></td>
-              <td>{{ printService.getEvent(event.id)?.label }}</td>
-              <td>{{ getWarningIfAny(event.id) }}</td>
-            </tr>
-          </table><br>
-          <button (click)="printCertificates()"
-                  [disabled]="printDisabled()"><i class="fa fa-download"></i> Download pdf</button><br><br>
+          <div *ngIf="state === 'REFRESHING'">
+            <p>Refreshing...</p>
+          </div>
+          <div *ngIf="state !== 'REFRESHING'">
+            <!-- INFORMATION ABOUT COMP AND PRINTING -->
+            <p> Selected competition: {{ competitionId }}<br><br>
+              <button (click)="printEmptyCertificate()"
+              ><i class="fa fa-download"></i> Empty certificate for {{ competitionId }}</button><br><br>
+              {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
+              ><i class="fa fa-refresh"></i> Refresh results</button></p>
+            <table class="center">
+              <tr *ngFor="let event of wcif.events">
+                <td><input type="checkbox" [(ngModel)]="event.printCertificate"></td>
+                <td>{{ printService.getEvent(event.id)?.label }}</td>
+                <td>{{ getWarningIfAny(event.id) }}</td>
+              </tr>
+            </table><br>
+            <button (click)="printCertificates()"
+                    [disabled]="printDisabled()"><i class="fa fa-download"></i> Download pdf</button>
+          </div>
         </mat-tab>
         <mat-tab label="Customize">
           <!-- CUSTOMIZE -->
@@ -58,13 +63,20 @@
             </select>&nbsp;&nbsp;
             <button (click)="printService.loadLanguageTemplate()"><i class="fa fa-refresh"></i> Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
             <textarea [(ngModel)]="printService.templateJson"></textarea><br><br>
-            Background design: <input type="file" (change)="printService.handleBackgroundSelected($event.target.files)"/><br><br>
-            <button (click)="state = 'PRINT'"><i class="fa fa-arrow-circle-left"></i> Go back to printing</button>
+            Background design: <input type="file" (change)="printService.handleBackgroundSelected($event.target.files)"/>
           </div>
         </mat-tab>
         <mat-tab label="Participation">
           <br>
-          <button (click)="printParticipationCertificates()"><i class="fa fa-download"></i> Download participation certificates</button>
+          <div *ngIf="state === 'REFRESHING'">
+            <p>Refreshing...</p>
+          </div>
+          <div *ngIf="state !== 'REFRESHING'">
+            <p> Selected competition: {{ competitionId }}<br><br>
+              {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
+              ><i class="fa fa-refresh"></i> Refresh results</button></p>
+            <button (click)="printParticipationCertificates()"><i class="fa fa-download"></i> Download participation certificates</button>
+          </div>
         </mat-tab>
       </mat-tab-group>
     </div>
