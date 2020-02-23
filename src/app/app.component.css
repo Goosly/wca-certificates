@@ -1,3 +1,5 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
 div {
   font-family: 'Roboto', sans-serif;
 }
@@ -54,4 +56,8 @@ button:disabled {
 textarea {
   width: 500px;
   height: 400px;
+}
+
+.mat-tab-labels{
+  justify-content: center;
 }

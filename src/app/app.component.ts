@@ -4,12 +4,14 @@ import { PrintService } from '../common/print';
 import { Event } from '@wca/helpers/lib/models/event';
 import { Result } from '@wca/helpers/lib/models/result';
 import { environment } from '../environments/environment';
+import { ViewEncapsulation } from '@angular/core';
 declare var $ :any;
 
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  styleUrls: [ './app.component.css' ],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent  {
   state: 'PRINT' | 'EDIT' | 'REFRESHING' = 'PRINT';
