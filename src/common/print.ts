@@ -137,8 +137,8 @@ export class PrintService {
     s = s.replace(/certificate.place/g, certificate.place);
     s = s.replace(/certificate.event/g, certificate.event);
     s = s.replace(/certificate.resultType/g, certificate.resultType);
-    s = s.replace(/certificate.result/g, certificate.result);
     s = s.replace(/certificate.resultUnit/g, certificate.resultUnit);
+    s = s.replace(/certificate.result/g, certificate.result);
     s = s.replace(/certificate.locationAndDate/g, certificate.locationAndDate);
     return s;
   }
@@ -306,7 +306,9 @@ export class PrintService {
       pageBreak: 'after'
     };
 
-    table.table.body.push(['Event', 'Result', 'Position']);
+    table.table.body.push([TranslationHelper.getEvent(this.participationLanguage),
+      TranslationHelper.getResult(this.participationLanguage),
+      TranslationHelper.getPosition(this.participationLanguage)]);
     wcif.events.forEach(event => {
       const array = [getEventName(event.id)];
       const result: Result = this.findResultOfPersonInEvent(p, event);

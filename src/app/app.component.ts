@@ -3,7 +3,6 @@ import { ApiService } from '../common/api';
 import { PrintService } from '../common/print';
 import { Event } from '@wca/helpers/lib/models/event';
 import { Result } from '@wca/helpers/lib/models/result';
-import { environment } from '../environments/environment';
 import { ViewEncapsulation } from '@angular/core';
 declare var $ :any;
 
@@ -64,8 +63,6 @@ export class AppComponent  {
             let personOfResult = wcif.persons.filter(p => p.registrantId === r.personId)[0];
             r['countryIso2'] = personOfResult.countryIso2;
           });
-          if (environment.testMode && e.id === '333fm')
-            e["printCertificate"] = true;
         });
         this.state = 'PRINT';
       } catch (error) {
