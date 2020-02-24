@@ -144,7 +144,7 @@ export class AppComponent  {
 
   printParticipationCertificates() {
     this.printService.printParticipationCertificates(this.wcif);
-    this.apiService.logUserClicksDownloadCertificates(this.wcif.id);
+    this.apiService.logUserClicksDownloadParticipationCertificates(this.wcif.id);
   }
 
 }
