@@ -179,6 +179,24 @@ export class TranslationHelper {
             '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
             '" en de volgende resultaten heeft behaald:\\n\\n"' + '\n' +
             ']';
+        case 'ru':
+          return '[' + '\n' +
+            '"\\n\\n\\n",' + '\n' +
+            '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+            '", со стороны ",' + '\n' +
+            '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+            '", и ",' + '\n' +
+            '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+            '", со стороны команды организаторов ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '", подтверждают, что",' + '\n' +
+            '"\\n\\n",' + '\n' +
+            '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+            '"\\n\\n",' + '\n' +
+            '"принял(а) участие в ",' + '\n' +
+            '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+            '" достигнув следующих результатов:\\n\\n"' + '\n' +
+            ']';
         default:
           return '';
       }
@@ -335,6 +353,8 @@ export class TranslationHelper {
         return 'Event';
       case 'nl':
         return 'Event';
+      case 'ru':
+        return 'Дисциплина';
       default:
         return this.getASingle('en');
     }
@@ -347,6 +367,8 @@ export class TranslationHelper {
         return 'Result';
       case 'nl':
         return 'Resultaat';
+      case 'ru':
+        return 'Результат';
       default:
         return this.getASingle('en');
     }
@@ -359,6 +381,8 @@ export class TranslationHelper {
         return 'Position';
       case 'nl':
         return 'Plaats';
+      case 'ru':
+        return 'Место';
       default:
         return this.getASingle('en');
     }

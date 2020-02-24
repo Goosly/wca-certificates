@@ -51,7 +51,7 @@ export class ApiService {
   getCompetitions(): Observable<any> {
     let url = `${environment.wcaUrl}/api/v0/competitions?managed_by_me=true`;
     const startDate = new Date();
-    startDate.setDate(startDate.getDate() - (environment.testMode ? this.ONE_YEAR : this.FOUR_WEEKS));
+    startDate.setDate(startDate.getDate() - this.FOUR_WEEKS); //(environment.testMode ? this.ONE_YEAR : this.FOUR_WEEKS)
     url += `&start=${startDate.toISOString()}`;
     return this.httpClient.get(url, {headers: this.headerParams});
   }

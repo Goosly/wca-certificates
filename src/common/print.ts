@@ -39,8 +39,8 @@ export class PrintService {
 
   private getNewCertificate(wcif: any, eventId: string, format: string, result: Result): Certificate {
     const certificate: Certificate = new Certificate();
-    certificate.delegate = this.getPersonsWithRole(wcif, 'delegate');
-    certificate.organizers = this.getPersonsWithRole(wcif, 'organizer');
+    certificate.delegate = this.getPersonsWithRole(wcif, 'delegate', this.language);
+    certificate.organizers = this.getPersonsWithRole(wcif, 'organizer', this.language);
     certificate.competitionName = wcif.name;
     certificate.name = wcif.persons.filter(p => p.registrantId === result.personId)[0].name;
     certificate.place = this.getPlace(result['rankingAfterFiltering']);
@@ -54,8 +54,8 @@ export class PrintService {
 
   private getEmptyCertificate(wcif: any): Certificate {
     const certificate: Certificate = new Certificate();
-    certificate.delegate = this.getPersonsWithRole(wcif, 'delegate');
-    certificate.organizers = this.getPersonsWithRole(wcif, 'organizer');
+    certificate.delegate = this.getPersonsWithRole(wcif, 'delegate', this.language);
+    certificate.organizers = this.getPersonsWithRole(wcif, 'organizer', this.language);
     certificate.competitionName = wcif.name;
     certificate.name = '';
     certificate.place = '            ';
@@ -93,7 +93,7 @@ export class PrintService {
     return mean.toString().substring(0, 2) + '.' + mean.toString().substring(2);
   }
 
-  private getPersonsWithRole(wcif: any, role: string): string {
+  private getPersonsWithRole(wcif: any, role: string, language: string): string {
     const persons = wcif.persons.filter(p => p.roles.includes(role));
     persons.sort((a, b) => a.name.localeCompare(b.name));
     if (persons.length === 1) {
@@ -101,7 +101,7 @@ export class PrintService {
     } else {
       const last = persons.pop();
       return persons.map(p => this.formatName(p.name)).join(', ')
-        + ' ' + TranslationHelper.getAnd(this.language) + ' ' + this.formatName(last.name);
+        + ' ' + TranslationHelper.getAnd(language) + ' ' + this.formatName(last.name);
     }
   }
 
@@ -283,8 +283,8 @@ export class PrintService {
 
   private getParticipationCertificate(wcif: any, p: Person) {
     const certificate = new Certificate();
-    certificate.delegate = this.getPersonsWithRole(wcif, 'delegate');
-    certificate.organizers = this.getPersonsWithRole(wcif, 'organizer');
+    certificate.delegate = this.getPersonsWithRole(wcif, 'delegate', this.participationLanguage);
+    certificate.organizers = this.getPersonsWithRole(wcif, 'organizer', this.participationLanguage);
     certificate.competitionName = wcif.name;
     certificate.name = p.name;
     return certificate;
