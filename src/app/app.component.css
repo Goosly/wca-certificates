@@ -61,3 +61,7 @@ textarea {
 .mat-tab-labels {
   justify-content: center;
 }
+
+.mat-ink-bar{
+  background-color: #4ddbff !important;
+}
