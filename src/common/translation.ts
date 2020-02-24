@@ -195,10 +195,10 @@ export class TranslationHelper {
             '"\\n\\n",' + '\n' +
             '"принял(а) участие в ",' + '\n' +
             '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-            '" достигнув следующих результатов:\\n\\n"' + '\n' +
+            '", достигнув следующих результатов:\\n\\n"' + '\n' +
             ']';
         default:
-          return '';
+          return this.getParticipationTemplate('en');
       }
     }
 
