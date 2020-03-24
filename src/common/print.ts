@@ -258,17 +258,17 @@ export class PrintService {
     }
   }
 
-  printParticipationCertificates(wcif: any) {
+  printParticipationCertificates(wcif: any, personsWithAResult: Person[]) {
     const document = this.getDocument(this.participationPageOrientation, this.participationBackground);
     document.defaultStyle.fontSize = 14;
-    Helpers.sortCompetitorsByName(wcif);
-    wcif.persons.forEach(p => {
+    Helpers.sortCompetitorsByName(personsWithAResult);
+    personsWithAResult.forEach(p => {
       const certificate = this.getParticipationCertificate(wcif, p);
       document.content.push(this.getOneParticipationCertificateFor(certificate));
       document.content.push(this.getResultsTableFor(p, wcif));
     });
 
-    this.removeLastPageBreak(document);
+    this.removeLastPageBreakFromParticipationCertificates(document);
     pdfMake.createPdf(document).download('Participation certificates ' + wcif.name + '.pdf');
   }
 
@@ -326,6 +326,10 @@ export class PrintService {
         {width: '*', text: ''},
       ]
     };
+  }
+
+  private removeLastPageBreakFromParticipationCertificates(document: any): void {
+    document.content[document.content.length - 1].columns[1].pageBreak = '';
   }
 
   private findResultOfPersonInEvent(p: Person, event: Event) {

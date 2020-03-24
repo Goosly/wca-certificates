@@ -74,8 +74,12 @@
           <div *ngIf="state !== 'REFRESHING'">
             <p> Selected competition: {{ competitionId }}<br><br>
               {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
-              ><i class="fa fa-refresh"></i> Refresh results</button></p>
-            <button (click)="printParticipationCertificates()"><i class="fa fa-download"></i> Download participation certificates</button>
+              ><i class="fa fa-refresh"></i> Refresh results</button><br><br>
+              {{ wcif.persons.length - personsWithAResult.length }}/{{ wcif.persons.length }} person(s) don't have any result yet
+            </p>
+            <button (click)="printParticipationCertificates()"
+                    [disabled]="personsWithAResult.length === 0"
+              ><i class="fa fa-download"></i> Download {{ personsWithAResult.length }} participation certificates</button>
           </div>
         </mat-tab>
         <mat-tab label="Customize participation certificates">
