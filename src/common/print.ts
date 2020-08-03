@@ -8,6 +8,7 @@ import {decodeMultiResult, formatMultiResult, isDnf} from '@wca/helpers/lib/help
 import {TranslationHelper} from './translation';
 import {getEventName, Person} from '@wca/helpers';
 import {Helpers} from './helpers';
+import {Backgrounds} from './backgrounds';
 
 declare var pdfMake: any;
 
@@ -21,7 +22,8 @@ export class PrintService {
   public pageOrientation: 'landscape' | 'portrait' = 'landscape';
   public participationPageOrientation: 'landscape' | 'portrait' = 'landscape';
   public showLocalNames = false;
-  public background: string = null;
+  public background: 'no' | 'orange' | 'upload' = 'no';
+  public backgroundImage: string = null;
   public participationBackground: string = null;
   public countries: string = '';
 
@@ -149,7 +151,7 @@ export class PrintService {
   }
 
   public printCertificates(wcif: any, events: string[]) {
-    const document = this.getDocument(this.pageOrientation, this.background);
+    const document = this.getDocument(this.pageOrientation, this.getBackgroundImage());
     let atLeastOneCertificate = false;
     for (let i = 0; i < events.length; i++) {
       const event: Event = wcif.events.filter(e => e.id === events[i])[0];
@@ -169,8 +171,19 @@ export class PrintService {
     pdfMake.createPdf(document).download('Certificates ' + wcif.name + '.pdf');
   }
 
+  private getBackgroundImage() {
+    switch (this.background) {
+      case 'no':
+        return null;
+      case 'orange':
+        return Backgrounds.orangeLandscape();
+      case 'upload':
+        return this.backgroundImage;
+    }
+  }
+
   public printEmptyCertificate(wcif: any) {
-    const document = this.getDocument(this.pageOrientation, this.background);
+    const document = this.getDocument(this.pageOrientation, this.getBackgroundImage());
     document.content.push(this.getOneCertificateContent(this.getEmptyCertificate(wcif)));
     this.removeLastPageBreak(document);
     pdfMake.createPdf(document).download('Empty certificate ' + wcif.name + '.pdf');
@@ -180,7 +193,7 @@ export class PrintService {
     const reader = new FileReader();
     reader.readAsDataURL(files.item(0));
     reader.onloadend = function (e) {
-      this.background = reader.result;
+      this.backgroundImage = reader.result;
     }.bind(this);
   }
 
@@ -210,10 +223,10 @@ export class PrintService {
         fontSize: 22
       }
     };
-    if (background !== null) {
+    if (background !== null && background !== '') {
       document['background'] = {
         image: background,
-        width: orientation === 'landscape' ? 840 : 594,
+        width: orientation === 'landscape' ? 841.89 : 595.28,
         alignment: 'center'
       };
     }

@@ -57,7 +57,17 @@
             </select>&nbsp;&nbsp;
             <button (click)="printService.loadLanguageTemplate()"><i class="fa fa-refresh"></i> Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
             <textarea [(ngModel)]="printService.podiumCertificateJson"></textarea><br><br>
-            Background design: <input type="file" (change)="printService.handleBackgroundSelected($event.target.files)"/><br><br>
+            Background image:
+            <select class='form-control' [(ngModel)]='printService.background'>
+              <option value='no'>No background</option>
+              <option value='orange'>Orange</option>
+              <option value='upload'>Upload an image myself</option>
+            </select>&nbsp;
+            <div class="tooltip"><i class="fa fa-info-circle"></i>
+              <span class="tooltiptext">The available backgrounds are provided by the WCT graphics team</span>
+            </div><br>
+            <input *ngIf="printService.background === 'upload'" type="file"
+                   (change)="printService.handleBackgroundSelected($event.target.files)"/><br><br>
             Page orientation:&nbsp;&nbsp;<select class='form-control' [(ngModel)]='printService.pageOrientation'>
             <option value='landscape'>Landscape</option>
             <option value='portrait'>Portrait</option>
