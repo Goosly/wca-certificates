@@ -28,7 +28,7 @@ export class AppComponent  {
           public apiService: ApiService,
           public printService: PrintService) {
       if (this.apiService.oauthToken) {
-        this.handleGetCompetitions();
+        this.handleFetchCompetitions();
       }
   }
 
@@ -36,13 +36,17 @@ export class AppComponent  {
     this.apiService.logIn();
   }
 
-  handleGetCompetitions() {
-    this.apiService.getCompetitions().subscribe(comps => {
+  handleFetchCompetitions() {
+    this.apiService.getCompetitions().subscribe(this.handleGetCompetitionsFromApi());
+  }
+
+  private handleGetCompetitionsFromApi() {
+    return comps => {
       if (comps.length === 1) {
         this.handleCompetitionSelected(comps[0]['id']);
       }
       this.competitionsToChooseFrom = comps.map(c => c['id']);
-    });
+    };
   }
 
   handleCompetitionSelected(competitionId: string) {

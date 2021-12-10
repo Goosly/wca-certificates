@@ -22,7 +22,7 @@ export class PrintService {
   public pageOrientation: 'landscape' | 'portrait' = 'landscape';
   public participationPageOrientation: 'landscape' | 'portrait' = 'landscape';
   public showLocalNames = false;
-  public background: 'no' | 'orange' | 'upload' = 'no';
+  public background: 'no' | 'orange' | 'green' | 'color' | 'cubecomps' | 'upload' = 'no';
   public backgroundImage: string = null;
   public participationBackground: string = null;
   public countries: string = '';
@@ -117,7 +117,7 @@ export class PrintService {
     if (place === 3) {
       return TranslationHelper.getThird(this.language);
     }
-    console.warn('Not a podium place');
+    console.warn('Not a podium place: ' + place);
     return '';
   }
 
@@ -176,7 +176,13 @@ export class PrintService {
       case 'no':
         return null;
       case 'orange':
-        return Backgrounds.orangeLandscape();
+        return this.pageOrientation === 'landscape' ? Backgrounds.orangeLandscape() : Backgrounds.orangePortrait();
+      case 'green':
+        return this.pageOrientation === 'landscape' ? Backgrounds.greenLandscape() : Backgrounds.greenPortrait();
+      case 'color':
+        return this.pageOrientation === 'landscape' ? Backgrounds.colorLandscape() : Backgrounds.colorPortrait();
+      case 'cubecomps':
+        return this.pageOrientation === 'landscape' ? Backgrounds.cubecompsLandscape() : Backgrounds.cubecompsPortrait();
       case 'upload':
         return this.backgroundImage;
     }
