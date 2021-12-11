@@ -81,10 +81,18 @@ export class AppComponent  {
     });
   }
 
-  printCertificates() {
-    this.printService.printCertificates(this.wcif,
-      Array.from(this.events.filter(e => e['printCertificate']).map(e => e.id)));
+  printCertificatesAsPdf() {
+    this.printService.printCertificatesAsPdf(this.wcif, this.getSelectedEvents());
     this.apiService.logUserClicksDownloadCertificates(this.wcif.id);
+  }
+
+  printCertificatesAsZip() {
+    this.printService.printCertificatesAsZip(this.wcif, this.getSelectedEvents());
+    this.apiService.logUserClicksDownloadCertificates(this.wcif.id);
+  }
+
+  private getSelectedEvents() {
+    return Array.from(this.events.filter(e => e['printCertificate']).map(e => e.id));
   }
 
   printEmptyCertificate() {

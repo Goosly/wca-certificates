@@ -36,12 +36,14 @@
             <table class="center">
               <tr *ngFor="let event of wcif.events">
                 <td><input type="checkbox" [(ngModel)]="event.printCertificate"></td>
-                <td>{{ printService.getEvent(event.id) }}</td>
+                <td>{{ printService.getEventName(event.id) }}</td>
                 <td>{{ getWarningIfAny(event.id) }}</td>
               </tr>
             </table><br>
-            <button (click)="printCertificates()"
-                    [disabled]="printDisabled()"><i class="fa fa-download"></i> Download pdf</button>
+            <button (click)="printCertificatesAsPdf()"
+                    [disabled]="printDisabled()"><i class="fa fa-download"></i> Download as single pdf</button>&nbsp;
+            <button (click)="printCertificatesAsZip()"
+                    [disabled]="printDisabled()"><i class="fa fa-download"></i> Download as zip</button>
           </div>
         </mat-tab>
         <mat-tab label="Customize podium certificates">

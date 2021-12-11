@@ -8,6 +8,7 @@ import {decodeMultiResult, formatMultiResult, isDnf} from '@wca/helpers/lib/help
 import {TranslationHelper} from './translation';
 import {getEventName, Person} from '@wca/helpers';
 import {Helpers} from './helpers';
+import * as JSZip from 'jszip';
 
 declare var pdfMake: any;
 
@@ -33,8 +34,8 @@ export class PrintService {
     this.participationCertificateJson = TranslationHelper.getParticipationTemplate(this.participationLanguage);
   }
 
-  public getEvent(eventId) {
-    return getEventName(eventId);
+  public getEventName(eventId) {
+    return getEventName(eventId).replace(' Cube', '');
   }
 
   private getNewCertificate(wcif: any, eventId: string, format: string, result: Result): Certificate {
@@ -44,7 +45,7 @@ export class PrintService {
     certificate.competitionName = wcif.name;
     certificate.name = wcif.persons.filter(p => p.registrantId === result.personId)[0].name;
     certificate.place = this.getPlace(result['rankingAfterFiltering']);
-    certificate.event = this.getEvent(eventId);
+    certificate.event = this.getEventName(eventId);
     certificate.resultType = this.getResultType(format, result);
     certificate.result = this.formatResultForEvent(result, eventId);
     certificate.resultUnit = this.getResultUnit(eventId);
@@ -148,7 +149,7 @@ export class PrintService {
       : (name).replace(new RegExp(' \\(.+\\)'), '');
   }
 
-  public printCertificates(wcif: any, events: string[]) {
+  public printCertificatesAsPdf(wcif: any, events: string[]) {
     const document = this.getDocument(this.pageOrientation, this.background);
     let atLeastOneCertificate = false;
     for (let i = 0; i < events.length; i++) {
@@ -167,6 +168,45 @@ export class PrintService {
 
     this.removeLastPageBreak(document);
     pdfMake.createPdf(document).download('Certificates ' + wcif.name + '.pdf');
+  }
+
+  public printCertificatesAsZip(wcif: any, events: string[]) {
+    const certificates: Certificate[] = [];
+    for (let i = 0; i < events.length; i++) {
+      const event: Event = wcif.events.filter(e => e.id === events[i])[0];
+      const podiumPlaces = event['podiumPlaces'];
+      const format = event.rounds[event.rounds.length - 1].format;
+
+      for (let p = 0; p < podiumPlaces.length; p++) {
+        certificates.push(this.getNewCertificate(wcif, events[i], format, podiumPlaces[p]));
+      }
+    }
+    if (certificates.length === 0) {
+      alert('No results available. Please select at least one event that already has results in the final.');
+    }
+
+    this.downloadAsZip(certificates, wcif);
+  }
+
+  private downloadAsZip(certificates: Certificate[], wcif: any) {
+    const zip = new JSZip();
+    const zipFolder = zip.folder('examples');
+    let counter = 0;
+    certificates.forEach(certificate => {
+      const document = this.getDocument(this.pageOrientation, this.background);
+      document.content.push(this.getOneCertificateContent(certificate));
+      this.removeLastPageBreak(document);
+      pdfMake.createPdf(document)
+        .getBlob(blob => {
+          zipFolder.file(certificate.event + ' - ' + certificate.name + '.pdf', blob, {binary: true});
+          counter++;
+          if (counter === certificates.length) {
+            zipFolder.generateAsync({type: 'blob'}).then(function (content) {
+              saveAs(content, 'Certificates ' + wcif.name + '.zip');
+            });
+          }
+        });
+    });
   }
 
   public printEmptyCertificate(wcif: any) {
