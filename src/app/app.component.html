@@ -77,7 +77,7 @@
             <p> Selected competition: {{ competitionId }}<br><br>
               {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
               ><i class="fa fa-refresh"></i> Refresh results</button><br><br>
-              {{ wcif.persons.length - personsWithAResult.length }}/{{ wcif.persons.length }} person(s) don't have any result yet
+              {{ wcif.persons.length - personsWithAResult.length }}/{{ wcif.persons.length }} competitor(s) don't have any result yet
             </p>
             <button (click)="printParticipationCertificatesAsPdf()"
                     [disabled]="personsWithAResult.length === 0"
@@ -85,6 +85,7 @@
             <button (click)="printParticipationCertificatesAsZip()"
                     [disabled]="personsWithAResult.length === 0"
             ><i class="fa fa-download"></i> Download {{ personsWithAResult.length }} participation certificates as zip</button>
+            <p>Note: generating may take a few seconds, depending on the number of competitors</p>
           </div>
         </mat-tab>
         <mat-tab label="Customize participation certificates">
