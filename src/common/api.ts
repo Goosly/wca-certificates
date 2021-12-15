@@ -14,7 +14,7 @@ export class ApiService {
   private logglyService: LogglyService;
 
   private ONE_YEAR = 365;
-  private FOUR_WEEKS = 28;
+  private EIGHT_WEEKS = 56;
 
   constructor(private httpClient: HttpClient) {
     this.getToken();
@@ -48,11 +48,16 @@ export class ApiService {
         + `&redirect_uri=${environment.appUrl}&response_type=token&scope=manage_competitions`;
   }
 
-  getCompetitions(): Observable<any> {
+  getRecentCompetitions(): Observable<any> {
     let url = `${environment.wcaUrl}/api/v0/competitions?managed_by_me=true`;
     const startDate = new Date();
-    startDate.setDate(startDate.getDate() - this.FOUR_WEEKS); //(environment.testMode ? this.ONE_YEAR : this.FOUR_WEEKS)
+    startDate.setDate(startDate.getDate() - (environment.testMode ? this.ONE_YEAR : this.EIGHT_WEEKS));
     url += `&start=${startDate.toISOString()}`;
+    return this.httpClient.get(url, {headers: this.headerParams});
+  }
+
+  getAllCompetitions(): Observable<any> {
+    const url = `${environment.wcaUrl}/api/v0/competitions?managed_by_me=true`;
     return this.httpClient.get(url, {headers: this.headerParams});
   }
 
@@ -65,12 +70,20 @@ export class ApiService {
       {headers: this.headerParams});
   }
 
-  logUserClicksDownloadCertificates(competitionId: any) {
-    this.logMessage(competitionId + ' - Certificates downloaded');
+  logUserClicksDownloadCertificatesAsPdf(competitionId: any) {
+    this.logMessage(competitionId + ' - Certificates downloaded as pdf');
   }
 
-  logUserClicksDownloadParticipationCertificates(competitionId: any) {
-    this.logMessage(competitionId + ' - Participation certificates downloaded');
+  logUserClicksDownloadCertificatesAsZip(competitionId: any) {
+    this.logMessage(competitionId + ' - Certificates downloaded as zip');
+  }
+
+  logUserClicksDownloadParticipationCertificatesAsPdf(competitionId: any) {
+    this.logMessage(competitionId + ' - Participation certificates downloaded as pdf');
+  }
+
+  logUserClicksDownloadParticipationCertificatesAsZip(competitionId: any) {
+    this.logMessage(competitionId + ' - Participation certificates downloaded as zip');
   }
 
   private logMessage(message: string) {

@@ -356,7 +356,7 @@ export class TranslationHelper {
       case 'ru':
         return 'Дисциплина';
       default:
-        return this.getASingle('en');
+        return this.getEvent('en');
     }
   }
 
@@ -370,21 +370,21 @@ export class TranslationHelper {
       case 'ru':
         return 'Результат';
       default:
-        return this.getASingle('en');
+        return this.getResult('en');
     }
   }
 
-  static getPosition(language: string) {
+  static getRanking(language: string) {
     switch (language) {
       case 'en':
       case 'en-us':
-        return 'Position';
+        return 'Ranking';
       case 'nl':
         return 'Plaats';
       case 'ru':
         return 'Место';
       default:
-        return this.getASingle('en');
+        return this.getRanking('en');
     }
   }
 

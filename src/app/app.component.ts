@@ -37,7 +37,7 @@ export class AppComponent  {
   }
 
   handleGetCompetitions() {
-    this.apiService.getCompetitions().subscribe(comps => {
+    this.apiService.getRecentCompetitions().subscribe(comps => {
       if (comps.length === 1) {
         this.handleCompetitionSelected(comps[0]['id']);
       }
@@ -83,12 +83,12 @@ export class AppComponent  {
 
   printCertificatesAsPdf() {
     this.printService.printCertificatesAsPdf(this.wcif, this.getSelectedEvents());
-    this.apiService.logUserClicksDownloadCertificates(this.wcif.id);
+    this.apiService.logUserClicksDownloadCertificatesAsPdf(this.wcif.id);
   }
 
   printCertificatesAsZip() {
     this.printService.printCertificatesAsZip(this.wcif, this.getSelectedEvents());
-    this.apiService.logUserClicksDownloadCertificates(this.wcif.id);
+    this.apiService.logUserClicksDownloadCertificatesAsZip(this.wcif.id);
   }
 
   private getSelectedEvents() {
@@ -158,9 +158,14 @@ export class AppComponent  {
     return this.events.filter(e => e['printCertificate']).length === 0;
   }
 
-  printParticipationCertificates() {
-    this.printService.printParticipationCertificates(this.wcif, this.personsWithAResult);
-    this.apiService.logUserClicksDownloadParticipationCertificates(this.wcif.id);
+  printParticipationCertificatesAsPdf() {
+    this.printService.printParticipationCertificatesAsPdf(this.wcif, this.personsWithAResult);
+    this.apiService.logUserClicksDownloadParticipationCertificatesAsPdf(this.wcif.id);
+  }
+
+  printParticipationCertificatesAsZip() {
+    this.printService.printParticipationCertificatesAsZip(this.wcif, this.personsWithAResult);
+    this.apiService.logUserClicksDownloadParticipationCertificatesAsZip(this.wcif.id);
   }
 
 }
