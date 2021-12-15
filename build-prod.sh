@@ -3,6 +3,8 @@ rm -r dist/*
 ng build -c=production
 mv dist/demo/* dist/
 
+git push origin --delete gh-pages
+
 git add *
 git commit -m "build"
 git push
