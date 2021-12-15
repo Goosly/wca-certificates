@@ -58,6 +58,7 @@ export class AppComponent  {
   private loadWcif(competitionId: string) {
     this.apiService.getWcif(this.competitionId).subscribe(wcif => {
       this.wcif = wcif;
+      this.wcif.persons = this.wcif.persons.filter(p => !!p.registration && p.registration.status === 'accepted');
       try {
         this.events = this.wcif.events;
         this.events.forEach(function(e) {
