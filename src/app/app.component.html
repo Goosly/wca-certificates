@@ -77,7 +77,7 @@
             <p> Selected competition: {{ competitionId }}<br><br>
               {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
               ><i class="fa fa-refresh"></i> Refresh results</button><br><br>
-              {{ wcif.persons.length - personsWithAResult.length }}/{{ wcif.persons.length }} competitor(s) don't have any result yet
+              {{ acceptedPersons - personsWithAResult.length }}/{{ acceptedPersons }} competitor(s) don't have any result yet
             </p>
             <button (click)="printParticipationCertificatesAsPdf()"
                     [disabled]="personsWithAResult.length === 0"

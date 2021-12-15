@@ -23,6 +23,7 @@ export class AppComponent  {
   events: Event[];
   wcif: any;
   personsWithAResult: Person[];
+  acceptedPersons: number;
 
   constructor (
           public apiService: ApiService,
@@ -58,8 +59,8 @@ export class AppComponent  {
   private loadWcif(competitionId: string) {
     this.apiService.getWcif(this.competitionId).subscribe(wcif => {
       this.wcif = wcif;
-      this.wcif.persons = this.wcif.persons.filter(p => !!p.registration && p.registration.status === 'accepted');
       try {
+        this.acceptedPersons = wcif.persons.filter(p => !!p.registration && p.registration.status === 'accepted').length;
         this.events = this.wcif.events;
         this.events.forEach(function(e) {
           e.rounds.forEach(function(r) {
