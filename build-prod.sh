@@ -1,6 +1,6 @@
 rm -r dist/*
 
-ng build -c=production
+ng build -c=production --base-href ./
 mv dist/demo/* dist/
 
 git push origin --delete gh-pages
