@@ -4,6 +4,7 @@ import {PrintService} from '../common/print';
 import {Event} from '@wca/helpers/lib/models/event';
 import {Result} from '@wca/helpers/lib/models/result';
 import {Person} from '@wca/helpers';
+import {Helpers} from '../common/helpers';
 
 @Component({
   selector: 'app-root',
@@ -134,6 +135,7 @@ export class AppComponent {
   }
 
   private getPodiumPlaces(results: Result[]): Result[] {
+    Helpers.sortResultsByRanking(results);
     const podiumPlaces = results.slice(0, 3);
     if (podiumPlaces.length >= 3) {
       let i = 3;
