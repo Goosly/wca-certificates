@@ -63,7 +63,7 @@ export class ApiService {
 
   getWcif(competitionId): Observable<any> {
     if (environment.testMode) {
-      return this.httpClient.get(`https://www.worldcubeassociation.org/api/v0/competitions/NewZealandNationals2022/wcif/public`,
+      return this.httpClient.get(`https://www.worldcubeassociation.org/api/v0/competitions/SSLIFalkenberg2023/wcif/public`,
         {headers: this.headerParams});
     }
     return this.httpClient.get(`${environment.wcaUrl}/api/v0/competitions/${competitionId}/wcif`,

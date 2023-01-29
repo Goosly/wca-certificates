@@ -135,13 +135,16 @@ export class AppComponent {
   }
 
   private getPodiumPlaces(results: Result[]): Result[] {
+    // TODO This needs a test
     Helpers.sortResultsByRanking(results);
     const podiumPlaces = results.slice(0, 3);
-    if (podiumPlaces.length >= 3) {
+    if (podiumPlaces.length === 3) {
       let i = 3;
-      while (i < results.length && i < (podiumPlaces.length - 1)) {
+      while (i < results.length) {
         if (podiumPlaces[i - 1].ranking === results[i].ranking) {
           podiumPlaces.push(results[i]);
+        } else {
+          break;
         }
         i++;
       }
