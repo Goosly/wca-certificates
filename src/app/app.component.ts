@@ -18,10 +18,13 @@ export class AppComponent {
   // Info about competitions managed by user
   competitionsToChooseFrom: Array<String> = null;
   competitionId: string;
+  customCompetitionId: string;
   events: Event[];
   wcif: any;
   personsWithAResult: Person[];
   acceptedPersons: number;
+  error: string;
+  loading: boolean;
 
   constructor (
           public apiService: ApiService,
@@ -37,9 +40,6 @@ export class AppComponent {
 
   handleGetCompetitions() {
     this.apiService.getRecentCompetitions().subscribe(comps => {
-      if (comps.length === 1) {
-        this.handleCompetitionSelected(comps[0]['id']);
-      }
       this.competitionsToChooseFrom = comps.map(c => c['id']);
     });
   }
@@ -55,7 +55,9 @@ export class AppComponent {
   }
 
   private loadWcif(competitionId: string) {
+    this.loading = true;
     this.apiService.getWcif(this.competitionId).subscribe(wcif => {
+      this.loading = false;
       this.wcif = wcif;
       try {
         this.acceptedPersons = wcif.persons.filter(p => !!p.registration && p.registration.status === 'accepted').length;
@@ -74,10 +76,13 @@ export class AppComponent {
         this.personsWithAResult = wcif.persons.filter(p => !!p['hasAResult']);
         this.state = 'PRINT';
       } catch (error) {
+        this.loading = false;
         console.error(error);
         this.wcif = null;
         this.competitionId = null;
       }
+    }, (error: any) => {
+      return this.error = error?.error?.error || error?.message;
     });
   }
 

@@ -12,11 +12,16 @@
   <!-- SELECT COMP -->
     <div *ngIf="apiService.oauthToken && ! competitionId">
       <p>Welcome!</p>
-      <p *ngIf="competitionsToChooseFrom">Select a competition:</p>
-      <p *ngFor="let competitionId of competitionsToChooseFrom">
-        <button class="competition" (click)="handleCompetitionSelected(competitionId)">{{competitionId}}</button>
-      </p>
-      <p *ngIf="!!competitionsToChooseFrom && competitionsToChooseFrom.length === 0">You don't have any competition available :-(</p>
+      <div *ngIf="competitionsToChooseFrom">
+        <p>Select a competition:</p>
+        <p *ngFor="let competitionId of competitionsToChooseFrom">
+          <button class="competition" (click)="handleCompetitionSelected(competitionId)">{{competitionId}}</button>
+        </p>
+        <p>Custom competition: <input type="text" [(ngModel)]="customCompetitionId">&nbsp;
+          <button class="competition" (click)="handleCompetitionSelected(customCompetitionId)">Load competitionId</button>
+        </p>
+        <p *ngIf="competitionsToChooseFrom.length === 0">You don't have any competition available :-(</p>
+      </div>
     </div>
 
     <div *ngIf="competitionId && wcif">
@@ -106,6 +111,9 @@
         </mat-tab>
       </mat-tab-group>
     </div>
+
+    <div *ngIf="error">{{error.toString()}}</div>
+    <div *ngIf="loading">Loading...</div>
   </div>
 
   <div class="footer left">
