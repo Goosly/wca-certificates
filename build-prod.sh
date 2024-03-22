@@ -1,3 +1,3 @@
 npm run build-prod
 
-ngh --dir=dist/wca-copy-schedule
+ngh --dir=dist/wca-certificates
