@@ -5,6 +5,7 @@ import {Event} from '@wca/helpers/lib/models/event';
 import {Result} from '@wca/helpers/lib/models/result';
 import {Person} from '@wca/helpers';
 import {Helpers} from '../common/helpers';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -154,7 +155,7 @@ export class AppComponent {
         i++;
       }
     }
-    return podiumPlaces;
+    return podiumPlaces.reverse();
   }
 
   private calculateRankingAfterFiltering(podiumPlaces: Result[]): void {
@@ -175,6 +176,10 @@ export class AppComponent {
   printParticipationCertificatesAsZip() {
     this.printService.printParticipationCertificatesAsZip(this.wcif, this.personsWithAResult);
     this.apiService.logUserClicksDownloadParticipationCertificatesAsZip(this.wcif.id);
+  }
+
+  version() {
+    return environment.version;
   }
 
 }

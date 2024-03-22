@@ -71,14 +71,14 @@ export class PrintService {
   private formatResultForEvent(result: Result, eventId: string): string {
     switch (eventId) {
       case '333fm':
-        return result['average'] > 0 ? this.formatFmcMean(result['average']) : isDnf(result['best']) ? 'DNF' : result['best'];
+        return (result['average'] > 0 ? this.formatFmcMean(result['average']) : isDnf(result['best']) ? 'DNF' : result['best']).toString();
       case '333bf':
       case '444bf':
       case '555bf':
         return formatCentiseconds(result['best']);
       case '333mbf':
-        const mbldResult: string = result['best'];
-        return formatMultiResult(decodeMultiResult('0' + mbldResult));
+        const mbldResult = result['best'];
+        return formatMultiResult(decodeMultiResult(mbldResult));
       default:
         return formatCentiseconds(result['average'] > 0 ? result['average'] : result['best']);
     }

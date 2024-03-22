@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="header center">
-    <h1>WCA Competition Certificates</h1>
+    <h1>WCA Competition Certificates</h1>&nbsp;<h6>{{version()}}</h6>
   </div>
 
   <div class="content center">
@@ -35,9 +35,9 @@
             <!-- INFORMATION ABOUT COMP AND PRINTING -->
             <p> Selected competition: {{ competitionId }}<br><br>
               <button (click)="printEmptyCertificate()"
-              ><i class="fa fa-download"></i> Empty certificate for {{ competitionId }}</button><br><br>
+              >Empty certificate for {{ competitionId }}</button><br><br>
               {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
-              ><i class="fa fa-refresh"></i> Refresh results</button></p>
+              >Refresh results</button></p>
             <table class="center">
               <tr *ngFor="let event of wcif.events">
                 <td><input type="checkbox" [(ngModel)]="event.printCertificate"></td>
@@ -46,9 +46,9 @@
               </tr>
             </table><br>
             <button (click)="printCertificatesAsPdf()"
-                    [disabled]="printDisabled()"><i class="fa fa-download"></i> Download as pdf</button>&nbsp;
+                    [disabled]="printDisabled()">Download as pdf</button>&nbsp;
             <button (click)="printCertificatesAsZip()"
-                    [disabled]="printDisabled()"><i class="fa fa-download"></i> Download as zip</button>
+                    [disabled]="printDisabled()">Download as zip</button>
           </div>
         </mat-tab>
         <mat-tab label="Customize podium certificates">
@@ -62,7 +62,7 @@
               <option value='fr'>French</option>
               <option value='ru'>Russian</option>
             </select>&nbsp;&nbsp;
-            <button (click)="printService.loadLanguageTemplate()"><i class="fa fa-refresh"></i> Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
+            <button (click)="printService.loadLanguageTemplate()">Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
             <textarea [(ngModel)]="printService.podiumCertificateJson"></textarea><br><br>
             Background design: <input type="file" (change)="printService.handleBackgroundSelected($event.target.files)"/><br><br>
             Page orientation:&nbsp;&nbsp;<select class='form-control' [(ngModel)]='printService.pageOrientation'>
@@ -81,15 +81,15 @@
           <div *ngIf="state !== 'REFRESHING'">
             <p> Selected competition: {{ competitionId }}<br><br>
               {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
-              ><i class="fa fa-refresh"></i> Refresh results</button><br><br>
+              >Refresh results</button><br><br>
               {{ acceptedPersons - personsWithAResult.length }}/{{ acceptedPersons }} competitor(s) don't have any result yet
             </p>
             <button (click)="printParticipationCertificatesAsPdf()"
                     [disabled]="personsWithAResult.length === 0"
-              ><i class="fa fa-download"></i> Download {{ personsWithAResult.length }} participation certificates as pdf</button>&nbsp;
+              >Download {{ personsWithAResult.length }} participation certificates as pdf</button>&nbsp;
             <button (click)="printParticipationCertificatesAsZip()"
                     [disabled]="personsWithAResult.length === 0"
-            ><i class="fa fa-download"></i> Download {{ personsWithAResult.length }} participation certificates as zip</button>
+            >Download {{ personsWithAResult.length }} participation certificates as zip</button>
             <p>Note: generating may take a few seconds, depending on the number of competitors</p>
           </div>
         </mat-tab>
@@ -101,7 +101,7 @@
             <option value='en-us'>English (US)</option>
             <option value='ru'>Russian</option>
           </select>&nbsp;&nbsp;
-          <button (click)="printService.loadLanguageParticipationTemplate()"><i class="fa fa-refresh"></i> Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
+          <button (click)="printService.loadLanguageParticipationTemplate()">Load language</button>&nbsp;&nbsp;This will overwrite any changes!<br><br>
           <textarea [(ngModel)]="printService.participationCertificateJson"></textarea><br><br>
           Background design: <input type="file" (change)="printService.handleParticipationBackgroundSelected($event.target.files)"/><br><br>
           Page orientation:&nbsp;&nbsp;<select class='form-control' [(ngModel)]='printService.participationPageOrientation'>
@@ -117,7 +117,7 @@
   </div>
 
   <div class="footer left">
-    <a href="https://github.com/Goosly/wca-certificates/wiki" target="_blank"><i class="fa fa-book"></i> Wiki</a>&nbsp;
-    <a href="https://github.com/Goosly/wca-certificates" target="_blank"><i class="fa fa-github"></i> Github</a>
+    <a href="https://github.com/Goosly/wca-certificates/wiki" target="_blank">Wiki</a>&nbsp;
+    <a href="https://github.com/Goosly/wca-certificates" target="_blank">Github</a>
   </div>
 </div>

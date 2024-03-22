@@ -31,10 +31,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "build-prod": "ng build -c=production"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.1102.19",
