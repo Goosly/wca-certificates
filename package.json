@@ -28,7 +28,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build-prod": "ng build -c=production"
+    "build-prod": "ng build -c=production --base-href https://goosly.github.io/wca-certificates/"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.1102.19",
