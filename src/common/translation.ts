@@ -118,6 +118,29 @@ export class TranslationHelper {
                     '{"text": "certificate.result", "bold": "true"},' + '\n' +
                     '" certificate.resultUnit"' + '\n' +
                     ']';
+            case 'es-mx':
+                return '[' + '\n' +
+                    '"\\n\\n\\n",' + '\n' +
+                    '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+                    '", en nombre de la ",' + '\n' +
+                    '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+                    '", y ",' + '\n' +
+                    '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+                    '", en representación del equipo organizador del ",' + '\n' +
+                    '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+                    '", certifican que",' + '\n' +
+                    '"\\n\\n\\n",' + '\n' +
+                    '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+                    '"\\n\\n\\n",' + '\n' +
+                    '"ha obtenido el ",' + '\n' +
+                    '{"text": "certificate.place", "bold": "true"},' + '\n' +
+                    '" lugar en ",' + '\n' +
+                    '{"text": "certificate.event", "bold": "true"},' + '\n' +
+                    '"\\n",' + '\n' +
+                    '"con un certificate.resultType de ",' + '\n' +
+                    '{"text": "certificate.result", "bold": "true"},' + '\n' +
+                    '" certificate.resultUnit"' + '\n' +
+                    ']';
             default:
                 return this.getTemplate('en');
         }
@@ -197,6 +220,24 @@ export class TranslationHelper {
             '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
             '", достигнув следующих результатов:\\n\\n"' + '\n' +
             ']';
+        case 'es-mx':
+            return '[' + '\n' +
+                '"\\n\\n\\n",' + '\n' +
+                '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
+                '", en nombre de la ",' + '\n' +
+                '{"text": "World Cube Association", "bold": "true"},' + '\n' +
+                '", y ",' + '\n' +
+                '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
+                '", en representación del equipo organizador del ",' + '\n' +
+                '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+                '", certifican que",' + '\n' +
+                '"\\n\\n",' + '\n' +
+                '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
+                '"\\n\\n",' + '\n' +
+                '"ha participado en el ",' + '\n' +
+                '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
+                '", obteniendo los siguientes resultados:\\n\\n"' + '\n' +
+                ']';
         default:
           return this.getParticipationTemplate('en');
       }
@@ -213,6 +254,8 @@ export class TranslationHelper {
                 return 'et';
             case 'ru':
                 return 'и';
+            case 'es-mx':
+                return 'y';
             default:
                 return '';
         }
@@ -229,6 +272,8 @@ export class TranslationHelper {
                 return 'première';
             case 'ru':
                 return 'первое';
+            case 'es-mx':
+                return 'primer';
             default:
                 return this.getFirst('en');
         }
@@ -245,6 +290,8 @@ export class TranslationHelper {
                 return 'seconde';
             case 'ru':
                 return 'второе';
+            case 'es-mx':
+                return 'segundo';
             default:
                 return this.getSecond('en');
         }
@@ -261,6 +308,8 @@ export class TranslationHelper {
                 return 'troisième';
             case 'ru':
                 return 'третье';
+            case 'es-mx':
+                return 'tercer';
             default:
                 return this.getThird('en');
         }
@@ -277,6 +326,8 @@ export class TranslationHelper {
                 return 'mouvements';
             case 'ru':
                 return ''; // Russian has different words depending on the number, too hard :(
+            case 'es-mx':
+                return 'movimientos';
             default:
                 return this.getMoves('en');
         }
@@ -293,6 +344,8 @@ export class TranslationHelper {
                 return 'un résultat';
             case 'ru':
                 return 'с результатом';
+            case 'es-mx':
+                return 'un resultado';
             default:
                 return this.getAResult('en');
         }
@@ -309,6 +362,8 @@ export class TranslationHelper {
                 return 'une moyenne';
             case 'ru':
                 return 'со средним';
+            case 'es-mx':
+                return 'un promedio';
             default:
                 return this.getAnAverage('en');
         }
@@ -325,6 +380,8 @@ export class TranslationHelper {
                 return 'une moyenne';
             case 'ru':
                 return 'со средним результатом';
+            case 'es-mx':
+                return 'una media';
             default:
                 return this.getAMean('en');
         }
@@ -341,6 +398,8 @@ export class TranslationHelper {
                 return 'un meilleur';
             case 'ru':
                 return 'с лучшим результатом';
+            case 'es-mx':
+                return 'un mejor resultado';
             default:
                 return this.getASingle('en');
         }
@@ -355,6 +414,8 @@ export class TranslationHelper {
         return 'Event';
       case 'ru':
         return 'Дисциплина';
+      case 'es-mx':
+        return 'Evento';
       default:
         return this.getEvent('en');
     }
@@ -369,6 +430,8 @@ export class TranslationHelper {
         return 'Resultaat';
       case 'ru':
         return 'Результат';
+      case 'es-mx':
+        return 'Resultado';
       default:
         return this.getResult('en');
     }
@@ -383,6 +446,8 @@ export class TranslationHelper {
         return 'Plaats';
       case 'ru':
         return 'Место';
+    case 'es-mx':
+        return 'Clasificación';
       default:
         return this.getRanking('en');
     }
