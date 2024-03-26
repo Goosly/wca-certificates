@@ -137,7 +137,7 @@ export class TranslationHelper {
                     '" lugar en ",' + '\n' +
                     '{"text": "certificate.event", "bold": "true"},' + '\n' +
                     '"\\n",' + '\n' +
-                    '"con un certificate.resultType de ",' + '\n' +
+                    '"con certificate.resultType de ",' + '\n' +
                     '{"text": "certificate.result", "bold": "true"},' + '\n' +
                     '" certificate.resultUnit"' + '\n' +
                     ']';
