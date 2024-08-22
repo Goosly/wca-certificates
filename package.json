@@ -17,7 +17,6 @@
     "@wca/helpers": "^1.1.0",
     "core-js": "2.5.7",
     "file-saver": "1.3.8",
-    "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "jszip": "^3.7.1",
     "ng2-cookies": "^1.0.12",
