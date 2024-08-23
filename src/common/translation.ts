@@ -144,13 +144,13 @@ export class TranslationHelper {
         return '[' + '\n' +
           '"\\n\\n\\n",' + '\n' +
           '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
-          '", im Namen der ",' + '\n' +
+          '" im Namen der ",' + '\n' +
           '{"text": "World Cube Association", "bold": "true"},' + '\n' +
           '", und ",' + '\n' +
           '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
-          '", im Namen des Organisationsteams von ",' + '\n' +
+          '" im Namen des Organisationsteams von ",' + '\n' +
           '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-          '"bestätigen, dass",' + '\n' +
+          '" bestätigen, dass",' + '\n' +
           '"\\n\\n\\n",' + '\n' +
           '{"text": "certificate.name", "fontSize": "32", "bold": "true"},' + '\n' +
           '"\\n\\n\\n",' + '\n' +
@@ -265,11 +265,11 @@ export class TranslationHelper {
         return '[' + '\n' +
           '"\\n\\n\\n",' + '\n' +
           '{"text": "certificate.delegate", "bold": "true"},' + '\n' +
-          '", im Namen der ",' + '\n' +
+          '" im Namen der ",' + '\n' +
           '{"text": "World Cube Association", "bold": "true"},' + '\n' +
-          '", und ",' + '\n' +
+          '" und ",' + '\n' +
           '{"text": "certificate.organizers", "bold": "true"},' + '\n' +
-          '", im Namen des Organisationsteams von ",' + '\n' +
+          '" im Namen des Organisationsteams von ",' + '\n' +
           '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
           '" bestätigen, dass",' + '\n' +
           '"\\n\\n",' + '\n' +
@@ -277,7 +277,7 @@ export class TranslationHelper {
           '"\\n\\n",' + '\n' +
           '"teilgenommen hat bei ",' + '\n' +
           '{"text": "certificate.competitionName", "bold": "true"},' + '\n' +
-          '", und dabei folgende Ergebnisse erreicht hat:\\n\\n"' + '\n' +
+          '" und dabei folgende Ergebnisse erreicht hat:\\n\\n"' + '\n' +
           ']';
       default:
         return this.getParticipationTemplate('en');
