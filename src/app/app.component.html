@@ -39,6 +39,11 @@
               {{ events?.length }} events found...&nbsp;&nbsp;<button (click)="handleRefreshCompetition()"
               >Refresh results</button></p>
             <table class="center">
+              <tr>
+                <td><input type="checkbox" (click)="checkAllEvents($event)"><b>Toggle all events</b></td>
+                <td><b>Event</b></td>
+                <td></td>
+              </tr>
               <tr *ngFor="let event of wcif.events">
                 <td><input type="checkbox" [(ngModel)]="event.printCertificate"></td>
                 <td>{{ printService.getEventName(event.id) }}</td>

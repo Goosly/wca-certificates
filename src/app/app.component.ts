@@ -182,4 +182,10 @@ export class AppComponent {
     return environment.version;
   }
 
+  checkAllEvents($event: MouseEvent) {
+    const checked = ($event.target as HTMLInputElement).checked;
+    this.events.forEach(e => {
+      e['printCertificate'] = checked;
+    });
+  }
 }
