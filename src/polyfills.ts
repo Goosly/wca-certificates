@@ -41,7 +41,7 @@
 
 
 /** Evergreen browsers require these. **/
-import 'core-js/es6/reflect';
+// core-js removed - not needed for modern browsers
 
 
 /** ALL Firefox browsers require the following to support `@angular/animation`. **/
