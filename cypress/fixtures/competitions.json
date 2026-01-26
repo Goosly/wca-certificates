@@ -1,0 +1,23 @@
+[
+  {
+    "id": "TestCompetition2024",
+    "name": "Test Competition 2024",
+    "start_date": "2024-06-15",
+    "end_date": "2024-06-16",
+    "country_iso2": "IE"
+  },
+  {
+    "id": "IrishOpen2024",
+    "name": "Irish Open 2024",
+    "start_date": "2024-03-10",
+    "end_date": "2024-03-10",
+    "country_iso2": "IE"
+  },
+  {
+    "id": "FutureComp2025",
+    "name": "Future Competition 2025",
+    "start_date": "2025-12-01",
+    "end_date": "2025-12-02",
+    "country_iso2": "IE"
+  }
+]

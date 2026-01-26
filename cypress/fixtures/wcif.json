@@ -1,0 +1,158 @@
+{
+  "formatVersion": "1.0",
+  "id": "TestCompetition2024",
+  "name": "Test Competition 2024",
+  "shortName": "Test 2024",
+  "persons": [
+    {
+      "registrantId": 1,
+      "name": "John Doe",
+      "wcaId": "2015DOEJ01",
+      "countryIso2": "IE",
+      "registration": {
+        "wcaRegistrationId": 123,
+        "eventIds": ["333", "222", "444"],
+        "status": "accepted"
+      }
+    },
+    {
+      "registrantId": 2,
+      "name": "Jane Smith",
+      "wcaId": "2016SMIJ01",
+      "countryIso2": "IE",
+      "registration": {
+        "wcaRegistrationId": 124,
+        "eventIds": ["333", "222"],
+        "status": "accepted"
+      }
+    },
+    {
+      "registrantId": 3,
+      "name": "Bob Wilson",
+      "wcaId": "2017WILB01",
+      "countryIso2": "IE",
+      "registration": {
+        "wcaRegistrationId": 125,
+        "eventIds": ["333", "444", "555"],
+        "status": "accepted"
+      }
+    },
+    {
+      "registrantId": 4,
+      "name": "Alice Brown",
+      "wcaId": "2018BROA01",
+      "countryIso2": "GB",
+      "registration": {
+        "wcaRegistrationId": 126,
+        "eventIds": ["333"],
+        "status": "accepted"
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "333",
+      "rounds": [
+        {
+          "id": "333-r1",
+          "format": "a",
+          "results": [
+            {
+              "personId": 1,
+              "ranking": 1,
+              "best": 892,
+              "average": 1023,
+              "attempts": [1102, 892, 1056, 1023, 1011]
+            },
+            {
+              "personId": 2,
+              "ranking": 2,
+              "best": 945,
+              "average": 1145,
+              "attempts": [1203, 945, 1156, 1076, 1203]
+            },
+            {
+              "personId": 3,
+              "ranking": 3,
+              "best": 1023,
+              "average": 1234,
+              "attempts": [1345, 1023, 1234, 1123, 1345]
+            },
+            {
+              "personId": 4,
+              "ranking": 4,
+              "best": 1156,
+              "average": 1345,
+              "attempts": [1456, 1156, 1345, 1234, 1456]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "222",
+      "rounds": [
+        {
+          "id": "222-r1",
+          "format": "a",
+          "results": [
+            {
+              "personId": 2,
+              "ranking": 1,
+              "best": 234,
+              "average": 345,
+              "attempts": [345, 234, 356, 334, 345]
+            },
+            {
+              "personId": 1,
+              "ranking": 2,
+              "best": 289,
+              "average": 398,
+              "attempts": [398, 289, 407, 389, 398]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "444",
+      "rounds": [
+        {
+          "id": "444-r1",
+          "format": "a",
+          "results": [
+            {
+              "personId": 3,
+              "ranking": 1,
+              "best": 4523,
+              "average": 5234,
+              "attempts": [5234, 4523, 5456, 5012, 5456]
+            },
+            {
+              "personId": 1,
+              "ranking": 2,
+              "best": 4890,
+              "average": 5678,
+              "attempts": [5678, 4890, 5890, 5466, 5678]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "555",
+      "rounds": [
+        {
+          "id": "555-r1",
+          "format": "a",
+          "results": []
+        }
+      ]
+    }
+  ],
+  "schedule": {
+    "startDate": "2024-06-15",
+    "numberOfDays": 2,
+    "venues": []
+  }
+}
