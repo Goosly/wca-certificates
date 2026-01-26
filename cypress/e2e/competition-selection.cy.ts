@@ -2,10 +2,14 @@
 
 describe('Competition Selection', () => {
   beforeEach(() => {
-    // Intercept the Irish competitions API call
-    cy.intercept('GET', '**/api/v0/competitions*country_iso2=IE*', {
+    // Intercept the Irish competitions API call (from GitHub raw)
+    cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/IE.json', {
       fixture: 'competitions.json'
-    }).as('getCompetitions');
+    }).as('getIrishCompetitions');
+
+    cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/GB.json', {
+      fixture: 'competitions-gb.json'
+    }).as('getUKCompetitions');
 
     cy.visit('/');
   });
@@ -15,13 +19,13 @@ describe('Competition Selection', () => {
   });
 
   it('should load and display competitions', () => {
-    cy.wait('@getCompetitions');
+    cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
     cy.get('.comp-selection').should('be.visible');
     cy.get('h2').should('contain', 'Select Competition');
   });
 
   it('should display competition categories (In Progress, Upcoming, Completed)', () => {
-    cy.wait('@getCompetitions');
+    cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
     // Check that category headers can exist (they appear based on competition dates)
     cy.get('.comp-selection').should('be.visible');
     // The actual categories displayed depend on the fixture data relative to current date
@@ -34,7 +38,7 @@ describe('Competition Selection', () => {
       fixture: 'wcif.json'
     }).as('getWcif');
 
-    cy.wait('@getCompetitions');
+    cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
     // Click on a competition button
     cy.get('.competition').first().click();
@@ -47,7 +51,7 @@ describe('Competition Selection', () => {
   });
 
   it('should allow entering custom competition ID', () => {
-    cy.wait('@getCompetitions');
+    cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
     // Check custom competition input exists
     cy.get('input[placeholder="Enter competition ID"]').should('be.visible');
@@ -59,7 +63,7 @@ describe('Competition Selection', () => {
       fixture: 'wcif.json'
     }).as('getCustomWcif');
 
-    cy.wait('@getCompetitions');
+    cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
     // Enter custom competition ID
     cy.get('input[placeholder="Enter competition ID"]').type('CustomComp2024');
@@ -77,7 +81,7 @@ describe('Competition Selection', () => {
       body: { error: 'Competition not found' }
     }).as('getInvalidWcif');
 
-    cy.wait('@getCompetitions');
+    cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
     cy.get('input[placeholder="Enter competition ID"]').type('InvalidComp');
     cy.contains('button', 'Load').click();

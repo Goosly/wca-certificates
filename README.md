@@ -40,22 +40,22 @@ Originally forked from https://github.com/Goosly/wca-certificates
 ## Development
 
 ### Prerequisites
-- Node.js 12.x or 14.x (LTS recommended; Node 16+ may have compatibility issues with Angular 11)
+- Node.js 16.x (required for Cypress E2E tests; also works with Angular 11)
 - Angular CLI 11.x
 
 ### Setting up Node.js with nvm
 
-If you have a newer version of Node.js installed, use [nvm](https://github.com/nvm-sh/nvm) to install and switch to Node 12:
+If you have a different version of Node.js installed, use [nvm](https://github.com/nvm-sh/nvm) to install and switch to Node 16:
 
 ```bash
-# Install Node 12
-nvm install 12
+# Install Node 16
+nvm install 16
 
-# Use Node 12 in current shell
-nvm use 12
+# Use Node 16 in current shell
+nvm use 16
 
 # Verify version
-node --version  # Should show v12.x.x
+node --version  # Should show v16.x.x
 ```
 
 ### Installing Angular CLI 11
@@ -67,8 +67,10 @@ npm install -g @angular/cli@11
 ### Installation
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
+
+Note: The `--legacy-peer-deps` flag is required due to peer dependency conflicts between Angular 11 and newer testing packages.
 
 ### Running Locally
 
@@ -83,10 +85,32 @@ Navigate to http://localhost:4200/
 ```bash
 # Unit tests
 ng test
-
-# End-to-end tests
-ng e2e
 ```
+
+### End-to-End Testing (Cypress)
+
+The project uses [Cypress](https://www.cypress.io/) for end-to-end testing. **Node 16 is required** for E2E tests.
+
+```bash
+# Run E2E tests (starts server automatically and runs tests headlessly)
+npm run e2e
+
+# Run E2E tests with Cypress UI (interactive mode)
+npm run e2e:open
+
+# Run Cypress tests only (requires server running on localhost:4200)
+npm run cy:run
+
+# Open Cypress UI only (requires server running on localhost:4200)
+npm run cy:open
+```
+
+The test suite covers:
+- Competition selection and loading
+- Podium certificate generation
+- Participation certificate generation
+- Certificate customization options
+- Tab navigation and error handling
 
 ## Build & Deploy
 

@@ -2,10 +2,14 @@
 
 describe('Podium Certificates Tab', () => {
   beforeEach(() => {
-    // Intercept API calls
-    cy.intercept('GET', '**/api/v0/competitions*country_iso2=IE*', {
+    // Intercept API calls (from GitHub raw)
+    cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/IE.json', {
       fixture: 'competitions.json'
-    }).as('getCompetitions');
+    }).as('getIrishCompetitions');
+
+    cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/GB.json', {
+      fixture: 'competitions-gb.json'
+    }).as('getUKCompetitions');
 
     cy.intercept('GET', '**/api/v0/competitions/*/wcif/public', {
       fixture: 'wcif.json'
@@ -15,7 +19,7 @@ describe('Podium Certificates Tab', () => {
     cy.intercept('POST', '**/inputs/*', { statusCode: 200 }).as('logEvent');
 
     cy.visit('/');
-    cy.wait('@getCompetitions');
+    cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
     // Select a competition
     cy.get('.competition').first().click();
@@ -76,13 +80,19 @@ describe('Podium Certificates Tab', () => {
   });
 
   it('should refresh data when clicking Refresh Data button', () => {
+    // Add delay to see refreshing state
+    cy.intercept('GET', '**/api/v0/competitions/*/wcif/public', {
+      fixture: 'wcif.json',
+      delay: 500
+    }).as('getWcifDelayed');
+
     cy.contains('button', 'Refresh Data').click();
 
     // Should show refreshing state
     cy.get('.status-refreshing').should('be.visible');
 
     // Wait for refresh to complete
-    cy.wait('@getWcif');
+    cy.wait('@getWcifDelayed');
     cy.get('.status-refreshing', { timeout: 10000 }).should('not.exist');
   });
 

@@ -2,9 +2,13 @@
 
 describe('Navigation & Error States', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/api/v0/competitions*country_iso2=IE*', {
+    cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/IE.json', {
       fixture: 'competitions.json'
-    }).as('getCompetitions');
+    }).as('getIrishCompetitions');
+
+    cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/GB.json', {
+      fixture: 'competitions-gb.json'
+    }).as('getUKCompetitions');
 
     cy.intercept('GET', '**/api/v0/competitions/*/wcif/public', {
       fixture: 'wcif.json'
@@ -14,7 +18,7 @@ describe('Navigation & Error States', () => {
   describe('Tab Navigation', () => {
     beforeEach(() => {
       cy.visit('/');
-      cy.wait('@getCompetitions');
+      cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
       // Select a competition
       cy.get('.competition').first().click();
@@ -66,10 +70,15 @@ describe('Navigation & Error States', () => {
   describe('Loading State', () => {
     it('should display loading state when fetching competitions', () => {
       // Delay the response to see loading state
-      cy.intercept('GET', '**/api/v0/competitions*country_iso2=IE*', {
+      cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/IE.json', {
         fixture: 'competitions.json',
         delay: 1000
-      }).as('getCompetitionsDelayed');
+      }).as('getIrishCompetitionsDelayed');
+
+      cy.intercept('GET', '**/speedcubing-ireland/wca-analysis/api/competitions/GB.json', {
+        fixture: 'competitions-gb.json',
+        delay: 1000
+      }).as('getUKCompetitionsDelayed');
 
       cy.visit('/');
 
@@ -84,7 +93,7 @@ describe('Navigation & Error States', () => {
       }).as('getWcifDelayed');
 
       cy.visit('/');
-      cy.wait('@getCompetitions');
+      cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
       cy.get('.competition').first().click();
 
@@ -104,7 +113,7 @@ describe('Navigation & Error States', () => {
       }).as('getWcifError');
 
       cy.visit('/');
-      cy.wait('@getCompetitions');
+      cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
       cy.get('.competition').first().click();
       cy.wait('@getWcifError');
@@ -120,7 +129,7 @@ describe('Navigation & Error States', () => {
       }).as('getWcifNotFound');
 
       cy.visit('/');
-      cy.wait('@getCompetitions');
+      cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
       cy.get('input[placeholder="Enter competition ID"]').type('NonExistent');
       cy.contains('button', 'Load').click();
@@ -133,7 +142,7 @@ describe('Navigation & Error States', () => {
   describe('Competition Header', () => {
     beforeEach(() => {
       cy.visit('/');
-      cy.wait('@getCompetitions');
+      cy.wait(['@getIrishCompetitions', '@getUKCompetitions']);
 
       cy.get('.competition').first().click();
       cy.wait('@getWcif');
